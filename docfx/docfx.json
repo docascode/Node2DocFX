@@ -1,0 +1,13 @@
+﻿{
+  "build": {
+    "content": [
+      {
+        "files": [ "**/*.yml" ],
+        "src": "yml",
+        "dest": "api"
+      }
+    ],
+    "dest": "_site",
+    "template": "default"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "node2docfx",
+  "version": "1.0.0",
+  "description": "generate documentation for node.js by jsdoc and docfx",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-run-sequence": "^0.3.2",
+    "gulp-shell": "^0.5.2",
+    "js-yaml": "^3.7.0",
+    "jsdoc": "^3.4.3"
+  },
+  "author": "",
+  "license": "MIT"
+}
