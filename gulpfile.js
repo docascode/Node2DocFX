@@ -11,7 +11,7 @@ var config = {
   },
   docfx: {
     path: 'tools\\docfx\\docfx.exe',
-    config: 'docfx\docfx.json'
+    config: 'docfx.json'
   }
 }
 
