@@ -1,0 +1,13 @@
+{
+  "src": "../azure-sdk-for-node/lib",
+  "jsdoc": {
+    "toolPath": "./node_modules/jsdoc/jsdoc.js",
+    "config": "./jsdocs/jsdoc.conf.json",
+    "yamlGeneratorConfig": "./jsdocs/plugins/yamlGenerator.json",
+    "dest": "obj"
+  },
+  "docfx": {
+    "toolPath": "tools\\docfx\\docfx.exe",
+    "config": "docfx.json"
+  }
+}

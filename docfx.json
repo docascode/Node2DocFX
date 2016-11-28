@@ -2,11 +2,13 @@
   "build": {
     "content": [
       {
-        "files": [ "**/*.yml" ],
-        "src": "yml",
-        "dest": "api"
+        "files": [ "**/*.yml", "**/*.md" ],
+        "src": "obj"
       }
     ],
+    "globalMetadata": {
+      "_disableContribution": true
+    },
     "dest": "_site",
     "template": ["default", "docfx_template"]
   }

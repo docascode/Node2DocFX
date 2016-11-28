@@ -11,6 +11,7 @@
     }
   ];
   var itemsMap = {};
+  var base = 'obj';
 
   function addItem(item) {
     items.push(item);
@@ -19,10 +20,11 @@
 
   function handleClass(item, doclet) {
     item.type = "Class";
+    item.summary = doclet.classdesc;
     // set syntax
-    item.syntax = {};
-    // hmm... anything better?
-    item.syntax.content = item.name;
+    // item.syntax = {};
+    // hmm... anything better? -- seems no need to add class syntax?
+    // item.syntax.content = item.name;
     // add a constructor
     var ctor = {
       id: item.id + ".#ctor",
@@ -31,6 +33,7 @@
       name: item.id
     };
     handleFunction(ctor, doclet);
+    item.children = [ctor.uid];
     addItem(ctor);
   }
 
@@ -65,7 +68,7 @@
     // 1. function method_name(arg1, arg2, ...);
     // 2. return_type function method_name(arg1, arg2)
     // 3. function method_name(arg1, arg2) -> return_type
-    item.syntax.content = "function " + item.name + ";";
+    item.syntax.content = (item.type === "Method" ? "function " : "new ") + item.name;
   }
 
   function handleMember(item, doclet) {
@@ -86,7 +89,6 @@
     var fs = require("fs");
     var classes = {};
     var fileMap = {};
-    var base = 'yml';
     if (!fs.existsSync(base)) {
       fs.mkdirSync(base);
     }
@@ -99,6 +101,7 @@
           };
           fileMap[i.uid] = i.uid;
           break;
+        case "Constructor":
         case "Method":
         case "Field":
           var parentId = i.parent || "global";
@@ -175,6 +178,10 @@
         console.log("unrecognized kind: " + doclet.kind);
         return;
       }
+      // ignore global member like require/exports
+      if (doclet.memberof === undefined && doclet.kind === "member") {
+        return;
+      }
       // basic properties
       var item = {
         uid: doclet.longname,
@@ -193,8 +200,17 @@
       // set full name
       item.fullName = (item.parent ? item.parent + "." : "") + item.name;
     },
+    parseBegin: function () {
+      var fs = require('fs');
+      var config = JSON.parse(fs.readFileSync('jsdocs/plugins/yamlGenerator.json'));
+      if (config) {
+        base = config.dest;
+      }
+    },
     parseComplete: function () {
       serialize();
+      // no need to generate html, directly exit process
+      process.exit(0);
     }
   };
 })();
