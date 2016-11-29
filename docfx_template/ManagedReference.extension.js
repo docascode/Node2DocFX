@@ -15,33 +15,38 @@ exports.preTransform = function (model) {
   function handleItem(item) {
     if (!item) return;
     if (item.syntax && item.syntax.parameters) {
-      var parameters = item.syntax.parameters;
-      var groupedParameters = [];
-      var cachedParameters = [];
-      var prefix = '';
-      while (parameters.length > 0) {
-        var parameter = parameters.pop();
-        parameter.properties = null;
-        if (parameter.id == prefix) {
-          parameter.properties = cachedParameters;
-          var cachedParameters = [];
-          var prefix = '';
-        }
-        var index = parameter.id.lastIndexOf('.');
-        if (index == -1) {
-          groupedParameters.unshift(parameter);
-        } else {
-          prefix = parameter.id.substring(0, index);
-          parameter.id = parameter.id.substring(index + 1);
-          cachedParameters.unshift(parameter);
-        }
-      }
-      item.syntax.parameters = groupedParameters;
+      item.syntax.parameters = groupParameters(item.syntax.parameters);
     }
   }
+}
 
-  function groupParameter(parameter, parameters, groupedParameters) {
+function groupParameters(parameters) {
+  var groupedParameters = [];
+  var stack = [];
+  for (var i = 0; i < parameters.length; i++) {
+    var parameter = parameters[i];
+    parameter.properties = null;
+    var prefixLength = 0;
+    while (stack.length > 0) {
+      var top = stack.pop();
+      var prefix = top.id + '.';
+      if (parameter.id.indexOf(prefix) == 0) {
+        prefixLength = prefix.length;
+        if (!top.parameter.properties) {
+          top.parameter.properties = [];
+        }
+        top.parameter.properties.push(parameter);
+        stack.push(top);
+        break;
+      }
+      if (stack.length == 0) {
+        groupedParameters.push(top.parameter);
+      }
+    }
+    stack.push({ id: parameter.id, parameter: parameter });
+    parameter.id = parameter.id.substring(prefixLength);
   }
+  return groupedParameters;
 }
 
 /**
