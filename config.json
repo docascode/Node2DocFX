@@ -1,5 +1,7 @@
 {
   "src": "../azure-sdk-for-node/lib",
+  "rootJs": "../azure-sdk-for-node/lib/azure.js",
+  "readme": "../azure-sdk-for-node/README.md",
   "jsdoc": {
     "toolPath": "./node_modules/jsdoc/jsdoc.js",
     "config": "./jsdocs/jsdoc.conf.json",
@@ -8,6 +10,7 @@
   },
   "docfx": {
     "toolPath": "tools\\docfx\\docfx.exe",
-    "config": "docfx.json"
+    "config": "docfx.json",
+    "dest": "_site"
   }
 }

@@ -7,7 +7,9 @@
       }
     ],
     "globalMetadata": {
-      "_disableContribution": true
+      "_disableContribution": true,
+      "_navPath": "",
+      "_navRel": ""
     },
     "dest": "_site",
     "template": ["default", "docfx_template"]

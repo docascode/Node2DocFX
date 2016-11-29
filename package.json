@@ -4,6 +4,7 @@
   "description": "generate documentation for node.js by jsdoc and docfx",
   "main": "gulpfile.js",
   "devDependencies": {
+    "glob": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-run-sequence": "^0.3.2",
