@@ -1,17 +1,9 @@
 (function () {
-  var items = [
-    // add a default global object
-    {
-      uid: "global",
-      id: "global",
-      name: "global",
-      fullName: "global",
-      type: "Class",
-      summary: "global object"
-    }
-  ];
+  var items = [];
+
   var itemsMap = {};
   var base = 'obj';
+  var globalUid = 'global';
 
   function addItem(item) {
     items.push(item);
@@ -104,14 +96,14 @@
         case "Constructor":
         case "Method":
         case "Field":
-          var parentId = i.parent || "global";
+          var parentId = i.parent || globalUid;
           var parent = classes[parentId];
           if (parent === undefined) {
             console.log(parentId + " is not a class, ignored.");
             break;
           }
           parent.items.push(i);
-          if (parentId === "global") {
+          if (parentId === globalUid) {
             (parent.items[0].children = parent.items[0].children || []).push(i.uid);
           }
           fileMap[i.uid] = parentId;
@@ -207,6 +199,20 @@
       if (yamlGeneratorConfig) {
         base = yamlGeneratorConfig.dest;
       }
+      // add a default global object
+      if (yamlGeneratorConfig.packageName) {
+        globalUid = yamlGeneratorConfig.packageName + ".global";
+      }
+      items.push(
+        {
+          uid: globalUid,
+          id: "global",
+          name: "global",
+          fullName: "global",
+          type: "Class",
+          summary: "global object"
+        }
+      )
     },
     parseComplete: function () {
       serialize();
