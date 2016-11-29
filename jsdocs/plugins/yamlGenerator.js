@@ -3,7 +3,8 @@
 
   var itemsMap = {};
   var base = 'obj';
-  var globalUid = 'global';
+  var globalUid = '_global';
+  var uidPrefix = '';
 
   function addItem(item) {
     items.push(item);
@@ -22,7 +23,7 @@
       id: item.id + ".#ctor",
       uid: item.uid + ".#ctor",
       parent: item.uid,
-      name: item.id
+      name: item.name
     };
     handleFunction(ctor, doclet);
     item.children = [ctor.uid];
@@ -164,7 +165,7 @@
     newDoclet: function (e) {
       var doclet = e.doclet;
       // ignore anything whose parent is not a doclet
-      if (doclet.memberof !== undefined && itemsMap[doclet.memberof] === undefined) return;
+      if (doclet.memberof !== undefined && itemsMap[uidPrefix + doclet.memberof] === undefined) return;
       // ignore unrecognized kind
       if (typeMap[doclet.kind] === undefined) {
         console.log("unrecognized kind: " + doclet.kind);
@@ -176,9 +177,9 @@
       }
       // basic properties
       var item = {
-        uid: doclet.longname,
-        id: doclet.name,
-        parent: doclet.memberof,
+        uid: uidPrefix + doclet.longname,
+        id: uidPrefix + doclet.name,
+        parent: doclet.memberof ? uidPrefix + doclet.memberof : undefined,
         name: doclet.name,
         summary: doclet.description
       };
@@ -201,12 +202,13 @@
       }
       // add a default global object
       if (yamlGeneratorConfig.packageName) {
-        globalUid = yamlGeneratorConfig.packageName + ".global";
+        globalUid = yamlGeneratorConfig.packageName + ".";
+        uidPrefix = yamlGeneratorConfig.packageName + ".";
       }
       items.push(
         {
           uid: globalUid,
-          id: "global",
+          id: globalUid,
           name: "global",
           fullName: "global",
           type: "Class",

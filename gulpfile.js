@@ -25,7 +25,7 @@ gulp.task('yml-package', function () {
   if (!fs.existsSync(config.jsdoc.dest)) {
     fs.mkdirSync(config.jsdoc.dest);
   }
-  util.generateYamlFromPackageJson('../azure-sdk-for-node/lib/services/batch/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
+  util.generateYamlFromPackageJson('../azure-sdk-for-node/lib/services/webSiteManagement2/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
 });
 
 gulp.task('yml-js', function () {
@@ -69,6 +69,8 @@ gulp.task('yml-azure', function () {
 
 gulp.task('docfx', shell.task([config.docfx.toolPath + ' ' + config.docfx.config]));
 
+gulp.task('clean', ['clean-yml', 'clean-html']);
+
 gulp.task('default', function (cb) {
-  runSequence('clean-yml', 'clean-html', 'yml-azure', 'docfx');
+  runSequence('yml-azure', 'docfx');
 });
