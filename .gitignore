@@ -3,3 +3,5 @@ _site
 out
 node_modules
 .vscode
+obj
+temp

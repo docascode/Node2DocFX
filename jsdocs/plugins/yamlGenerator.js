@@ -202,9 +202,10 @@
     },
     parseBegin: function () {
       var fs = require('fs');
-      var config = JSON.parse(fs.readFileSync('jsdocs/plugins/yamlGenerator.json'));
-      if (config) {
-        base = config.dest;
+      var config = JSON.parse(fs.readFileSync('config.json'));
+      var yamlGeneratorConfig = JSON.parse(fs.readFileSync(config.jsdoc.yamlGeneratorConfig));
+      if (yamlGeneratorConfig) {
+        base = yamlGeneratorConfig.dest;
       }
     },
     parseComplete: function () {

@@ -3,7 +3,7 @@
   "jsdoc": {
     "toolPath": "./node_modules/jsdoc/jsdoc.js",
     "config": "./jsdocs/jsdoc.conf.json",
-    "yamlGeneratorConfig": "./jsdocs/plugins/yamlGenerator.json",
+    "yamlGeneratorConfig": "./temp/yamlGenerator.json",
     "dest": "obj"
   },
   "docfx": {
