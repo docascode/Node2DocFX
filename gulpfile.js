@@ -22,8 +22,15 @@ gulp.task('yml-package', function() {
   if (!fs.existsSync(config.jsdoc.dest)) {
     fs.mkdirSync(config.jsdoc.dest);
   }
-  util.generateYamlAndCopyMd('../azure-sdk-for-node/lib/services/batch/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
-})
+  util.generateYamlFromPackageJson('../azure-sdk-for-node/lib/services/batch/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
+});
+
+gulp.task('yml-js', function() {
+  if (!fs.existsSync(config.jsdoc.dest)) {
+    fs.mkdirSync(config.jsdoc.dest);
+  }
+  util.generateYamlFromJs('../azure-sdk-for-node/lib/azure.js', path.join(config.jsdoc.dest, 'azure'), config);
+});
 
 gulp.task('yml', shell.task(['node ' + config.jsdoc.path + ' ' + config.src + ' -r -c ' + config.jsdoc.config]));
 
