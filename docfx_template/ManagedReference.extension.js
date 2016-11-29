@@ -46,6 +46,10 @@ function groupParameters(parameters) {
     stack.push({ id: parameter.id, parameter: parameter });
     parameter.id = parameter.id.substring(prefixLength);
   }
+  while (stack.length > 0) {
+    top = stack.pop();
+  }
+  groupedParameters.push(top.parameter);
   return groupedParameters;
 }
 
