@@ -23,7 +23,8 @@
       id: item.id + ".#ctor",
       uid: item.uid + ".#ctor",
       parent: item.uid,
-      name: item.name
+      name: item.name,
+      summary: doclet.description
     };
     handleFunction(ctor, doclet);
     item.children = [ctor.uid];
