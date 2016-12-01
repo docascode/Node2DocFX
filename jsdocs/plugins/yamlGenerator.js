@@ -172,8 +172,12 @@
         console.log("unrecognized kind: " + doclet.kind);
         return;
       }
-      // ignore global member like require/exports
-      if (doclet.memberof === undefined && doclet.kind === "member") {
+      // ignore unexported global member
+      if (doclet.memberof === undefined && doclet.meta.code.name.indexOf('exports') != 0) {
+        return;
+      }
+      // ignore empty longname
+      if (!doclet.longname) {
         return;
       }
       // basic properties
