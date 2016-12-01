@@ -1,6 +1,7 @@
 (function () {
-  var items = [];
+  var dfm = require('./dfm');
 
+  var items = [];
   var itemsMap = {};
   var base = 'obj';
   var globalUid = '_global';
@@ -13,7 +14,7 @@
 
   function handleClass(item, doclet) {
     item.type = "Class";
-    item.summary = doclet.classdesc;
+    item.summary = dfm.convertLinkToGfm(doclet.classdesc);
     // set syntax
     // item.syntax = {};
     // hmm... anything better? -- seems no need to add class syntax?
@@ -24,7 +25,7 @@
       uid: item.uid + ".#ctor",
       parent: item.uid,
       name: item.name,
-      summary: doclet.description
+      summary: dfm.convertLinkToGfm(doclet.description)
     };
     handleFunction(ctor, doclet);
     item.children = [ctor.uid];
@@ -40,7 +41,7 @@
         return {
           id: p.name,
           type: p.type === undefined ? undefined : p.type.names[0],
-          description: p.description
+          description: dfm.convertLinkToGfm(p.description)
         };
       });
     }
@@ -54,7 +55,7 @@
     if (doclet.returns != undefined) {
       item.syntax.return = {
         type: doclet.returns[0].type === undefined ? undefined : doclet.returns[0].type.names[0],
-        description: doclet.returns[0].description
+        description: dfm.convertLinkToGfm(doclet.returns[0].description)
       };
     }
     // set syntax
@@ -173,20 +174,24 @@
         return;
       }
       // ignore unexported global member
-      if (doclet.memberof === undefined && doclet.meta.code.name.indexOf('exports') != 0) {
+      if (doclet.memberof === undefined && doclet.kind != "class" && !(doclet.meta && doclet.meta.code && doclet.meta.code.name && doclet.meta.code.name.indexOf("exports") == 0)) {
         return;
       }
       // ignore empty longname
       if (!doclet.longname) {
         return;
       }
+      var parent = '';
+      if (doclet.memberof === undefined && doclet.kind != "class") {
+        parent = "_global.";
+      }
       // basic properties
       var item = {
-        uid: uidPrefix + doclet.longname,
-        id: uidPrefix + doclet.name,
+        uid: uidPrefix + parent + doclet.longname,
+        id: uidPrefix + parent + doclet.longname,
         parent: doclet.memberof ? uidPrefix + doclet.memberof : undefined,
         name: doclet.name,
-        summary: doclet.description
+        summary: dfm.convertLinkToGfm(doclet.description)
       };
       // set parent
       if (item.parent !== undefined) {
@@ -196,7 +201,7 @@
       addItem(item);
       typeMap[doclet.kind](item, doclet);
       // set full name
-      item.fullName = (item.parent ? item.parent + "." : "") + item.name;
+      item.fullName = (item.parent ? item.parent + "." : uidPrefix) + item.name;
     },
     parseBegin: function () {
       var fs = require('fs');
@@ -207,7 +212,7 @@
       }
       // add a default global object
       if (yamlGeneratorConfig.packageName) {
-        globalUid = yamlGeneratorConfig.packageName + ".";
+        globalUid = yamlGeneratorConfig.packageName + "." + globalUid;
         uidPrefix = yamlGeneratorConfig.packageName + ".";
       }
       items.push(

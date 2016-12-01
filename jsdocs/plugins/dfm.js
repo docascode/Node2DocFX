@@ -19,6 +19,7 @@
       }
     ];
 
+    if (!text) return '';
     var result = text;
     linkRules.forEach(function (r) {
       result = result.replace(r.regexp, r.callback);
@@ -42,7 +43,8 @@
           result = '<code>' + result + '</code>';
         }
         result = '[' + result + '](';
-        if (!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(target)) {
+        // http://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url#answer-3809435
+        if (!/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(target)) {
           // if target isn't a url, it must be a namepath(uid)
           result += 'xref:';
           if (uidPrefix) {
