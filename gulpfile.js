@@ -1,5 +1,6 @@
 var fs = require('fs');
 var glob = require('glob');
+var ncp = require('ncp').ncp;
 var path = require('path');
 var serializer = require('js-yaml');
 var gulp = require('gulp');
@@ -51,7 +52,15 @@ gulp.task('yml-azure', function () {
     console.log('copy from ' + config.readme + ' to ' + path.join(config.jsdoc.dest, 'index.md'));
     fs.createReadStream(config.readme).pipe(fs.createWriteStream(path.join(config.jsdoc.dest, 'index.md')));
   }
-  // 4. generate root toc
+  // 4. Copy Documentation
+  ncp(path.join(config.repoRoot, config.doc), path.join(config.jsdoc.dest, config.doc), function (err) {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('copy documentation');
+  })
+
+  // 5. generate root toc
   var toc = [{ name: 'azure', href: 'azure\\' }];
   packageJsons.forEach(function (p) {
     var packageName = JSON.parse(fs.readFileSync(p)).name;

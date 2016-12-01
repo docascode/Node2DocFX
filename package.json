@@ -10,7 +10,8 @@
     "gulp-run-sequence": "^0.3.2",
     "gulp-shell": "^0.5.2",
     "js-yaml": "^3.7.0",
-    "jsdoc": "^3.4.3"
+    "jsdoc": "^3.4.3",
+    "ncp": "^2.0.0"
   },
   "author": "",
   "license": "MIT"
