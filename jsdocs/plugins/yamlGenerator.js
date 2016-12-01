@@ -191,7 +191,7 @@
         id: uidPrefix + parent + doclet.longname,
         parent: doclet.memberof ? uidPrefix + doclet.memberof : undefined,
         name: doclet.name,
-        summary: dfm.convertLinkToGfm(doclet.description)
+        summary: doclet.description ? dfm.convertLinkToGfm(doclet.description) : dfm.convertLinkToGfm(doclet.summary)
       };
       // set parent
       if (item.parent !== undefined) {
