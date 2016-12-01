@@ -6,6 +6,7 @@
   var base = 'obj';
   var globalUid = '_global';
   var uidPrefix = '';
+  var builtInTypes = [];
 
   function addItem(item) {
     items.push(item);
@@ -40,7 +41,7 @@
       item.syntax.parameters = doclet.params.map(function (p) {
         return {
           id: p.name,
-          type: p.type === undefined ? undefined : p.type.names[0],
+          type: handleParameterType(p.type),
           description: dfm.convertLinkToGfm(p.description)
         };
       });
@@ -54,7 +55,7 @@
     // set return type
     if (doclet.returns != undefined) {
       item.syntax.return = {
-        type: doclet.returns[0].type === undefined ? undefined : doclet.returns[0].type.names[0],
+        type: handleParameterType(doclet.returns[0].type),
         description: dfm.convertLinkToGfm(doclet.returns[0].description)
       };
     }
@@ -64,6 +65,15 @@
     // 2. return_type function method_name(arg1, arg2)
     // 3. function method_name(arg1, arg2) -> return_type
     item.syntax.content = (item.type === "Method" ? "function " : "new ") + item.name;
+
+    function handleParameterType(type) {
+      if (!type) return undefined;
+      var result = type.names[0];
+      if (builtInTypes.indexOf(result.toLowerCase()) == -1) {
+        result = uidPrefix + result;
+      }
+      return result;
+    }
   }
 
   function handleMember(item, doclet) {
@@ -130,7 +140,7 @@
         if (f !== id) {
           c.references.push({
             uid: r,
-            name: r,
+            name: r.indexOf(".") == -1 ? r : r.substring(r.indexOf(".") + 1),
             fullName: r,
             isExternal: f === undefined
           });
@@ -225,6 +235,7 @@
           summary: "global object"
         }
       )
+      builtInTypes = JSON.parse(fs.readFileSync('built-in.json')).map(function (t) { return t.toLowerCase(); });
     },
     parseComplete: function () {
       serialize();
