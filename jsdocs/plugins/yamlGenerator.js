@@ -177,7 +177,10 @@
     newDoclet: function (e) {
       var doclet = e.doclet;
       // ignore anything whose parent is not a doclet
-      if (doclet.memberof !== undefined && itemsMap[uidPrefix + doclet.memberof] === undefined) return;
+      // except it's a class made with help function
+      if (doclet.memberof !== undefined && itemsMap[uidPrefix + doclet.memberof] === undefined && doclet.kind !== "class") {
+        return;
+      }
       // ignore unrecognized kind
       if (typeMap[doclet.kind] === undefined) {
         console.log("unrecognized kind: " + doclet.kind);
@@ -192,14 +195,14 @@
         return;
       }
       var parent = '';
-      if (doclet.memberof === undefined && doclet.kind != "class") {
+      if (doclet.memberof === undefined && doclet.kind !== "class") {
         parent = "_global.";
       }
       // basic properties
       var item = {
         uid: uidPrefix + parent + doclet.longname,
         id: uidPrefix + parent + doclet.longname,
-        parent: doclet.memberof ? uidPrefix + doclet.memberof : undefined,
+        parent: (doclet.memberof && doclet.kind !== "class") ? (uidPrefix + doclet.memberof) : undefined,
         name: doclet.name,
         summary: doclet.description ? dfm.convertLinkToGfm(doclet.description) : dfm.convertLinkToGfm(doclet.summary)
       };

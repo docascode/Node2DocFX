@@ -26,7 +26,7 @@ gulp.task('yml-package', function () {
   if (!fs.existsSync(config.jsdoc.dest)) {
     fs.mkdirSync(config.jsdoc.dest);
   }
-  util.generateYamlFromPackageJson('../azure-sdk-for-node/lib/services/webSiteManagement2/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
+  util.generateYamlFromPackageJson('../azure-sdk-for-node/lib/services/webSiteManagement/package.json', path.join(config.jsdoc.dest, '{_packageName}'), config);
 });
 
 gulp.task('yml-js', function () {
