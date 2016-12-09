@@ -14,7 +14,7 @@ For global members that hasn't parent class, the format of UID is designed as:
 {packageName}._global.namepath
 ```
 
-### 1.2 New DocumentProcessor for DocFX
+### 1.2 New DocumentProcessor for DocFX (🛠**TO BE IMPLEMENTED**)
 JavaScript has some language features hard to fit DocFX's PageViewModel, like [optional parameter](221-an-optional-parameter-using-jsdoc-syntax), [multiple types parameter](231-allows-one-type-or-another-type-type-union), so some new properties are needed and some existing properties' type need to be changed.
 
 2. JavaScript Language Features
@@ -37,7 +37,7 @@ See http://usejsdoc.org/tags-param.html#parameters-with-properties
       // ...
   };
   ```
-* Need template support 
+* Need template support:
   * [ManagedReference.extension.js](../docfx_template/ManagedReference.extension.js): `function groupParameters(parameters)`
   * [parameters.tmpl.partial](../docfx_template/partials/parameters.tmpl.partial)
 
@@ -145,6 +145,6 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
 3. Other Features in JSDoc
 --------
 ### 3.1 `{@link}`
-See http://usejsdoc.org/tags-inline-link.html
+See http://usejsdoc.org/tags-inline-link.html  
 JSDoc uses `{@link}` inline tag to link to a internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
 To make it compatible to DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
