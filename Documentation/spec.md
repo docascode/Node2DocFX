@@ -40,7 +40,6 @@ See http://usejsdoc.org/tags-param.html#parameters-with-properties
 * Need template support 
   * [ManagedReference.extension.js](../docfx_template/ManagedReference.extension.js): `function groupParameters(parameters)`
   * [parameters.tmpl.partial](../docfx_template/partials/parameters.tmpl.partial)
-  * abc
 
 #### 2.1.2 Documenting properties of values in an array (🛠**TO BE IMPLEMENTED**)
 
