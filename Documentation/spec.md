@@ -21,20 +21,130 @@ JavaScript has some language features hard to fit DocFX's PageViewModel, like [o
 --------
 ### 2.1 Parameters with properties
 See http://usejsdoc.org/tags-param.html#parameters-with-properties
+
 #### 2.1.1 Documenting a parameter's properties
+
+* Example:
+
+  ```js
+  /**
+   * Assign the project to an employee.
+   * @param {Object} employee - The employee who is responsible for the project.
+   * @param {string} employee.name - The name of the employee.
+   * @param {string} employee.department - The employee's department.
+   */
+  Project.prototype.assign = function(employee) {
+      // ...
+  };
+  ```
+* Need template support 
+  * [ManagedReference.extension.js](../docfx_template/ManagedReference.extension.js): `function groupParameters(parameters)`
+  * [parameters.tmpl.partial](../docfx_template/partials/parameters.tmpl.partial)
+
 #### 2.1.2 Documenting properties of values in an array (🛠**TO BE IMPLEMENTED**)
+
+* Example:
+
+  ```js
+  /**
+   * Assign the project to a list of employees.
+   * @param {Object[]} employees - The employees who are responsible for the project.
+   * @param {string} employees[].name - The name of an employee.
+   * @param {string} employees[].department - The employee's department.
+   */
+  Project.prototype.assign = function(employees) {
+      // ...
+  };
+  ```
+  
 ### 2.2 Optional parameters and default values
 See http://usejsdoc.org/tags-param.html#optional-parameters-and-default-values
 #### 2.2.1 An optional parameter (using JSDoc syntax) (🛠**TO BE IMPLEMENTED**)
+
+* Example:
+
+  ```js
+  /**
+   * @param {string} [somebody] - Somebody's name.
+   */
+  function sayHello(somebody) {
+      if (!somebody) {
+          somebody = 'John Doe';
+      }
+      alert('Hello ' + somebody);
+  }
+  ```
+  
 #### 2.2.2 An optional parameter and default value (🛠**TO BE IMPLEMENTED**)
+
+* Example:
+
+  ```js
+  /**
+   * @param {string} [somebody=John Doe] - Somebody's name.
+   */
+  function sayHello(somebody) {
+      if (!somebody) {
+          somebody = 'John Doe';
+      }
+      alert('Hello ' + somebody);
+  }
+  ```
+
 ### 2.3 Multiple types and repeatable parameters
 See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
 #### 2.3.1 Allows one type OR another type (type union) (🛠**TO BE IMPLEMENTED**)
+
+* Example:
+
+  ```js
+  /**
+   * @param {(string|string[])} [somebody=John Doe] - Somebody's name, or an array of names.
+   */
+  function sayHello(somebody) {
+      if (!somebody) {
+          somebody = 'John Doe';
+      } else if (Array.isArray(somebody)) {
+          somebody = somebody.join(', ');
+      }
+      alert('Hello ' + somebody);
+  }
+  ```
+  
 #### 2.3.2 Allows any type (🛠**TO BE IMPLEMENTED**)
+
+* Example:
+
+  ```js
+  /**
+   * @param {*} somebody - Whatever you want.
+   */
+  function sayHello(somebody) {
+      console.log('Hello ' + JSON.stringify(somebody));
+  }
+```
+
 #### 2.3.3 Allows a parameter to be repeated (🛠**TO BE IMPLEMENTED**)
 
+* Example:
 
-### 2.2 parameter with properties
+  ```js
+  /**
+   * Returns the sum of all numbers passed to the function.
+   * @param {...number} num - A positive or negative number.
+   */
+  function sum(num) {
+      var i = 0, n = arguments.length, t = 0;
+      for (; i < n; i++) {
+          t += arguments[i];
+      }
+      return t;
+  }
+  ```
+
 3. Other Features in JSDoc
 --------
-### 3.1 {@link}
+### 3.1 `{@link}`
+See http://usejsdoc.org/tags-inline-link.html
+JSDoc uses `{@link}` inline tag to link to a internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
+To make it compatible to DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
