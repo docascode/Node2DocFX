@@ -146,5 +146,9 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
 --------
 ### 3.1 `{@link}`
 See http://usejsdoc.org/tags-inline-link.html  
-JSDoc uses `{@link}` inline tag to link to a internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
+JSDoc uses `{@link}` inline tag to link to an internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
 To make it compatible to DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
+
+### 3.2 `{@tutorial}` (:no_good_man:**NOT SUPPORTED FOR NOW**)
+See http://usejsdoc.org/about-tutorials.html  
+JSDoc uses `{@tutorial}` inline/block tag to link to an internal markdown or HTML file, with the filename without extension as identifier. This is not supported as it has the assumption that file under different directionaries can't have the same filename. Using [Markdown Links](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) is recommended.
