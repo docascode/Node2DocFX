@@ -9,6 +9,7 @@
     "gulp-clean": "^0.3.2",
     "gulp-run-sequence": "^0.3.2",
     "gulp-shell": "^0.5.2",
+    "jasmine": "^2.5.2",
     "js-yaml": "^3.7.0",
     "jsdoc": "^3.4.3",
     "ncp": "^2.0.0"
