@@ -12,6 +12,7 @@
     "jasmine": "^2.5.2",
     "js-yaml": "^3.7.0",
     "jsdoc": "^3.4.3",
+    "jsdoc-to-markdown": "^2.0.1",
     "ncp": "^2.0.0"
   },
   "author": "",
