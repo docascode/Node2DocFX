@@ -26,6 +26,7 @@
       uid: item.uid + ".#ctor",
       parent: item.uid,
       name: item.name,
+      fullName: item.fullName + '.' + item.name,
       summary: dfm.convertLinkToGfm(doclet.description)
     };
     handleFunction(ctor, doclet);
@@ -46,12 +47,13 @@
         };
       });
     }
-    // set name
+    // set name and fullName
     var params = [];
     (item.syntax.parameters || []).forEach(function (p) {
       if (p.id.indexOf(".") < 0) params.push(p.id);
     });
     item.name += "(" + params.join(", ") + ")";
+    item.fullName += "(" + params.join(", ") + ")";
     // set return type
     if (doclet.returns != undefined) {
       item.syntax.return = {
@@ -211,10 +213,10 @@
         var parent = itemsMap[item.parent];
         (parent.children = parent.children || []).push(item.uid);
       }
-      addItem(item);
-      typeMap[doclet.kind](item, doclet);
       // set full name
       item.fullName = (item.parent ? item.parent + "." : uidPrefix) + item.name;
+      addItem(item);
+      typeMap[doclet.kind](item, doclet);
     },
     parseBegin: function () {
       var fs = require('fs');
