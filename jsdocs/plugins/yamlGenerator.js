@@ -164,6 +164,25 @@
         name: c.items[0].name
       });
     };
+    toc.sort(function (a, b) {
+      // sort classes alphabetically, but GLOBAL at last
+      if (a.uid === globalUid) {
+        return 1;
+      }
+      if (b.uid === globalUid) {
+        return -1;
+      }
+      var nameA = a.name.toUpperCase();
+      var nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    });
 
     fs.writeFileSync(base + "/toc.yml", serializer.safeDump(toc));
     console.log("toc.yml generated.");
@@ -234,8 +253,8 @@
         {
           uid: globalUid,
           id: globalUid,
-          name: "global",
-          fullName: "global",
+          name: "GLOBAL",
+          fullName: "GLOBAL",
           type: "Class",
           summary: "global object"
         }
