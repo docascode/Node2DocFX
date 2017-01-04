@@ -14,8 +14,10 @@ For global members that hasn't parent class, the format of UID is designed as:
 {packageName}._global.namepath
 ```
 
-### 1.2 New DocumentProcessor for DocFX (🛠**TO BE IMPLEMENTED**)
+### 1.2 New DocumentProcessor for DocFX
 JavaScript has some language features hard to fit DocFX's PageViewModel, like [optional parameter](221-an-optional-parameter-using-jsdoc-syntax), [multiple types parameter](231-allows-one-type-or-another-type-type-union), so some new properties are needed and some existing properties' type need to be changed.
+* plugin package: https://www.nuget.org/packages/Microsoft.DocAsCode.Build.JavaScriptReference/
+* plugin source: https://github.com/dotnet/docfx/tree/dev/plugins/Microsoft.DocAsCode.Build.JavaScriptReference
 
 2. JavaScript Language Features
 --------
@@ -38,7 +40,7 @@ See http://usejsdoc.org/tags-param.html#parameters-with-properties
   };
   ```
 * Need template support:
-  * [ManagedReference.extension.js](../docfx_template/ManagedReference.extension.js): `function groupParameters(parameters)`
+  * [JavaScriptReference.common.js](../docfx_template/JavaScriptReference.common.js): `function groupParameters(parameters)`
   * [parameters.tmpl.partial](../docfx_template/partials/parameters.tmpl.partial)
 
 #### 2.1.2 Documenting properties of values in an array (🛠**TO BE IMPLEMENTED**)
@@ -93,7 +95,7 @@ See http://usejsdoc.org/tags-param.html#optional-parameters-and-default-values
 
 ### 2.3 Multiple types and repeatable parameters
 See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
-#### 2.3.1 Allows one type OR another type (type union) (🛠**TO BE IMPLEMENTED**)
+#### 2.3.1 Allows one type OR another type (type union)
 
 * Example:
 
@@ -110,6 +112,8 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
       alert('Hello ' + somebody);
   }
   ```
+* Need template support:
+  * [JavaScriptReference.common.js](../docfx_template/JavaScriptReference.common.js): `function joinType(parameter)`
   
 #### 2.3.2 Allows any type (🛠**TO BE IMPLEMENTED**)
 
@@ -147,7 +151,7 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
 ### 3.1 `{@link}`
 See http://usejsdoc.org/tags-inline-link.html  
 JSDoc uses `{@link}` inline tag to link to an internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
-To make it compatible to DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
+To make it compatible with DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
 
 ### 3.2 `{@tutorial}` (:no_good_man:**NOT SUPPORTED FOR NOW**)
 See http://usejsdoc.org/about-tutorials.html  
