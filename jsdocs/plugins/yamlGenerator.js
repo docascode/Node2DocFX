@@ -7,6 +7,8 @@
   var globalUid = '_global';
   var uidPrefix = '';
   var builtInTypes = [];
+  var yamlMime = "### YamlMime:JavaScriptReference";
+  var outputFileExt = ".yml";
 
   function addItem(item) {
     items.push(item);
@@ -43,7 +45,8 @@
         return {
           id: p.name,
           type: handleParameterType(p.type),
-          description: dfm.convertLinkToGfm(p.description)
+          description: dfm.convertLinkToGfm(p.description),
+          optional: p.optional
         };
       });
     }
@@ -58,7 +61,8 @@
     if (doclet.returns != undefined) {
       item.syntax.return = {
         type: handleParameterType(doclet.returns[0].type),
-        description: dfm.convertLinkToGfm(doclet.returns[0].description)
+        description: dfm.convertLinkToGfm(doclet.returns[0].description),
+        optional: doclet.returns[0].optional
       };
     }
     // set syntax
@@ -70,11 +74,12 @@
 
     function handleParameterType(type) {
       if (!type) return undefined;
-      var result = type.names[0];
-      if (builtInTypes.indexOf(result.toLowerCase()) == -1) {
-        result = uidPrefix + result;
-      }
-      return result;
+      return type.names.map(function (n) {
+        if (builtInTypes.indexOf(n.toLowerCase()) == -1) {
+          n = uidPrefix + n;
+        }
+        return n;
+      });
     }
   }
 
@@ -84,7 +89,7 @@
     item.syntax = {};
     if (doclet.type != undefined) {
       item.syntax.return = {
-        type: doclet.type.names[0]
+        type: [doclet.type.names[0]]
       };
     }
     // set syntax
@@ -123,10 +128,14 @@
           }
           fileMap[i.uid] = parentId;
           (i.syntax.parameters || []).forEach(function (p) {
-            classes[parentId].referenceMap[p.type] = true;
+            (p.type || []).forEach(function (t) {
+              classes[parentId].referenceMap[t] = true;
+            });
           });
           if (i.syntax.return) {
-            classes[parentId].referenceMap[i.syntax.return.type] = true;
+            (i.syntax.return.type || []).forEach(function (t) {
+              classes[parentId].referenceMap[t] = true;
+            })
           }
           break;
       }
@@ -156,9 +165,9 @@
       // something wrong in js-yaml, workaround it by serialize and deserialize from JSON
       var c = JSON.parse(JSON.stringify(c));
       // replace \r, \n, space with dash
-      var fileName = id.replace(/[ \n\r]/g, "-");
-      fs.writeFileSync(base + '/' + fileName + ".yml", serializer.safeDump(c));
-      console.log(fileName + ".yml generated.");
+      var fileName = id.replace(/[ \n\r]/g, "-") + outputFileExt;
+      fs.writeFileSync(base + '/' + fileName, yamlMime + '\n' + serializer.safeDump(c));
+      console.log(fileName + " generated.");
       toc.push({
         uid: id,
         name: c.items[0].name
