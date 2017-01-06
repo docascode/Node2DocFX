@@ -3,7 +3,7 @@ var fse = require('fs-extra');
 var child_process = require('child_process');
 var path = require('path');
 
-var jsdocConfigPath = '_jsdocConfTemp.json';
+var jsdocConfigFilename = '_jsdocConfTemp.json';
 var jsdocToolPath = 'node_modules/jsdoc/jsdoc.js';
 var jsdocPluginPath = 'jsdocs/plugins/yamlGenerator';
 var jsdocOutputPath = '_yamlGeneratorOutput/';
@@ -12,6 +12,7 @@ if (process.argv.length < 3) {
   console.log('Usage: node node2docfx {conf.json}');
 }
 var node2docfxToolDir = path.dirname(process.argv[1]);
+var node2docfxConfigDir = path.dirname(process.argv[2]);
 
 // read node2docfx's config
 var configPath = process.argv[2];
@@ -30,14 +31,15 @@ var jsdocConfig = {
   package: config.package,
   readme: config.readme
 };
+var jsdocConfigPath = path.join(node2docfxConfigDir, jsdocConfigFilename);
 fs.writeFileSync(jsdocConfigPath, JSON.stringify(jsdocConfig));
 
 // run jsdoc
-child_process.execFileSync('node', [path.join(node2docfxToolDir, jsdocToolPath), '-c', jsdocConfigPath, '-r']);
+child_process.execFileSync('node', [path.join(node2docfxToolDir, jsdocToolPath), '-c', jsdocConfigFilename, '-r'], {cwd: node2docfxConfigDir});
 
 // move and clear
 if (config.destination) {
-  fse.move(jsdocOutputPath, config.destination, function (err) {
+  fse.move(path.join(node2docfxConfigDir, jsdocOutputPath), path.join(node2docfxConfigDir, config.destination), function (err) {
     if (err) return console.error(err)
   });
 }

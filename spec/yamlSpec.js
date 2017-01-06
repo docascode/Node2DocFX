@@ -3,20 +3,21 @@ describe('Yaml', function () {
   var output = {};
 
   beforeAll(function () {
+    var child_process = require('child_process');
     var fs = require('fs');
+    var fse = require('fs-extra');
     var path = require('path');
     var yaml = require('js-yaml');
 
-    var outputFolder = 'testOutput';
+    var outputFolder = 'spec/testOutput';
     var fixtureFolder = 'spec/fixtures';
     var config = JSON.parse(fs.readFileSync('config.json'));
 
     // clean output
-    util.deleteFolderRecursive(outputFolder);
-    fs.mkdirSync(outputFolder);
+    fse.removeSync(outputFolder);
 
     // generate Yaml
-    util.generateYamlFromFolder(fixtureFolder, outputFolder, config);
+    child_process.execFileSync('node', ['node2docfx.js', 'spec/node2docfx.json']);
 
     // load yaml from output
     fs.readdirSync(outputFolder).forEach(function (item) {
