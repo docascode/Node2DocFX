@@ -4,7 +4,8 @@ var child_process = require('child_process');
 var path = require('path');
 
 var jsdocConfigFilename = '_jsdocConfTemp.json';
-var jsdocToolPath = fs.existsSync('node_modules/jsdoc/jsdoc.js') ? 'node_modules/jsdoc/jsdoc.js' : '../jsdoc/jsdoc.js';
+var jsdocToolPath = 'node_modules/jsdoc/jsdoc.js';
+var jsdocToolPathFallback = '../jsdoc/jsdoc.js';
 var jsdocPluginPath = 'jsdocs/plugins/yamlGenerator';
 var jsdocOutputPath = '_yamlGeneratorOutput/';
 
@@ -35,7 +36,14 @@ var jsdocConfigPath = path.join(node2docfxConfigDir, jsdocConfigFilename);
 fs.writeFileSync(jsdocConfigPath, JSON.stringify(jsdocConfig));
 
 // run jsdoc
-child_process.execFileSync('node', [path.join(node2docfxToolDir, jsdocToolPath), '-c', jsdocConfigFilename, '-r'], {cwd: node2docfxConfigDir});
+var toolPath = path.join(node2docfxToolDir, jsdocToolPath);
+if (!fs.existsSync(toolPath)) {
+  toolPath = path.join(node2docfxToolDir, jsdocToolPathFallback);
+  if (!fs.existsSync(toolPath)) {
+    console.err("Can't find jsdoc.");
+  }
+}
+child_process.execFileSync('node', [toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });
 
 // move and clear
 if (config.destination) {
