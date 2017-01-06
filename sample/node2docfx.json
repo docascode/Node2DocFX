@@ -1,0 +1,15 @@
+{
+  "source": {
+    "include": [
+      "./"
+    ],
+    "exclude": [
+      "node_modules/"
+    ],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "package": "package.json",
+  "readme": "README.md",
+  "destination": "obj/"
+}

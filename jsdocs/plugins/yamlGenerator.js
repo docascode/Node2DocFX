@@ -3,12 +3,14 @@
 
   var items = [];
   var itemsMap = {};
-  var base = 'obj';
+  var base = '_yamlGeneratorOutput';
   var globalUid = '_global';
   var uidPrefix = '';
   var builtInTypes = [];
   var yamlMime = "### YamlMime:JavaScriptReference";
   var outputFileExt = ".yml";
+  var jsdocConfigPath = '_jsdocConfTemp.json';
+  var builtInTypes = ["array","arraybuffer","asyncfunction","atomics","boolean","dataview","date","error","evalerror","float32array","float64array","function","generator","generatorfunction","infinity","int16array","int32array","int8array","internalerror","intl","intl.collator","intl.datetimeformat","intl.numberformat","iterator","json","map","math","nan","number","object","parallelarray","promise","proxy","rangeerror","referenceerror","reflect","regexp","simd","simd.bool16x8","simd.bool32x4","simd.bool64x2","simd.bool8x16","simd.float32x4","simd.float64x2","simd.int16x8","simd.int32x4","simd.int8x16","simd.uint16x8","simd.uint32x4","simd.uint8x16","set","sharedarraybuffer","stopiteration","string","symbol","syntaxerror","typeerror","typedarray","urierror","uint16array","uint32array","uint8array","uint8clampedarray","weakmap","weakset", "undefined"]
 
   function addItem(item) {
     items.push(item);
@@ -248,15 +250,22 @@
     },
     parseBegin: function () {
       var fs = require('fs');
-      var config = JSON.parse(fs.readFileSync('config.json'));
-      var yamlGeneratorConfig = JSON.parse(fs.readFileSync(config.jsdoc.yamlGeneratorConfig));
-      if (yamlGeneratorConfig) {
-        base = yamlGeneratorConfig.dest;
+      var fse = require('fs-extra');
+      var path = require('path');
+      var config = fse.readJsonSync(jsdocConfigPath);
+
+      // copy readme.md to index.md
+      if (config.readme) {
+        fse.copySync(config.readme, path.join(base, 'index.md'));
       }
-      // add a default global object
-      if (yamlGeneratorConfig.packageName) {
-        globalUid = yamlGeneratorConfig.packageName + "." + globalUid;
-        uidPrefix = yamlGeneratorConfig.packageName + ".";
+
+      // parse package.json to use package name
+      if (config.package) {
+        var packageJson = fse.readJsonSync(config.package);
+        if (packageJson && packageJson.name) {
+          globalUid = packageJson.name + "." + globalUid;
+          uidPrefix = packageJson.name + ".";
+        }
       }
       items.push(
         {
@@ -268,7 +277,6 @@
           summary: "global object"
         }
       )
-      builtInTypes = JSON.parse(fs.readFileSync('built-in.json')).map(function (t) { return t.toLowerCase(); });
     },
     parseComplete: function () {
       serialize();
