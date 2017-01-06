@@ -4,7 +4,7 @@ var child_process = require('child_process');
 var path = require('path');
 
 var jsdocConfigFilename = '_jsdocConfTemp.json';
-var jsdocToolPath = 'node_modules/jsdoc/jsdoc.js';
+var jsdocToolPath = fs.existsSync('node_modules/jsdoc/jsdoc.js') ? 'node_modules/jsdoc/jsdoc.js' : '../jsdoc/jsdoc.js';
 var jsdocPluginPath = 'jsdocs/plugins/yamlGenerator';
 var jsdocOutputPath = '_yamlGeneratorOutput/';
 
