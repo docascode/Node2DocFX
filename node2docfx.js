@@ -45,10 +45,11 @@ if (!fs.existsSync(toolPath)) {
 }
 child_process.execFileSync('node', [toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });
 
-// move and clear
+// rename and clear
 if (config.destination) {
-  fse.move(path.join(node2docfxConfigDir, jsdocOutputPath), path.join(node2docfxConfigDir, config.destination), function (err) {
-    if (err) return console.error(err)
-  });
+  var source = path.join(node2docfxConfigDir, jsdocOutputPath);
+  var dest = path.join(node2docfxConfigDir, config.destination);
+  fse.ensureDirSync(path.dirname(dest));
+  fs.renameSync(source, dest);
 }
 fs.unlinkSync(jsdocConfigPath);
