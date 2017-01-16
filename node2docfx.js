@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var fse = require('fs-extra');
 var child_process = require('child_process');
@@ -20,7 +22,7 @@ var configPath = process.argv[2];
 if (fs.existsSync(configPath)) {
   var config = JSON.parse(fs.readFileSync(configPath));
 } else {
-  console.error(`Config file ${configPath} doesn\'t exist.`);
+  console.error('Config file ' + configPath + ' doesn\'t exist.');
   process.exit(1);
 }
 
@@ -40,7 +42,7 @@ var toolPath = path.join(node2docfxToolDir, jsdocToolPath);
 if (!fs.existsSync(toolPath)) {
   toolPath = path.join(node2docfxToolDir, jsdocToolPathFallback);
   if (!fs.existsSync(toolPath)) {
-    console.err("Can't find jsdoc.");
+    console.err('Can\'t find jsdoc.');
   }
 }
 child_process.execFileSync('node', [toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });

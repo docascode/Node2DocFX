@@ -8,15 +8,16 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm install
-  - npm install -g jasmine
+  - npm install -g gulp
 
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
-  # run tests
-  - jasmine
+  # lint and run tests
+  - gulp lint
+  - gulp test
 
 # Don't actually build.
 build: off

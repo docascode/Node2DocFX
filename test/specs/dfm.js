@@ -1,6 +1,7 @@
+'use strict';
+
 describe('dfm', function () {
-  var assert = require('assert');
-  var dfm = require('../jsdocs/plugins/dfm');
+  var dfm = require('../../jsdocs/plugins/dfm');
 
   it('{@link} tag should be transformed to dfm', function () {
     expect(dfm.convertLinkToGfm('{@link MyClass}')).toBe('<xref:MyClass>');
@@ -14,5 +15,5 @@ describe('dfm', function () {
     );
     expect(dfm.convertLinkToGfm('{@link MyClass}', 'packageName.')).toBe('<xref:packageName.MyClass>');
     expect(dfm.convertLinkToGfm('[MyClass\'s foo property]{@link MyClass#foo}', 'packageName.')).toBe('[MyClass\'s foo property](xref:packageName.MyClass#foo)');
-  })
-})
+  });
+});
