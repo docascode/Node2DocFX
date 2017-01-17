@@ -21,5 +21,6 @@
     "jsdoc": "^3.4.3"
   },
   "repository": "https://github.com/superyyrrzz",
-  "bugs": "https://github.com/superyyrrzz/Node2DocFX/issues"
+  "bugs": "https://github.com/superyyrrzz/Node2DocFX/issues",
+  "keywords": ["javascript", "documentation", "docfx"]
 }
