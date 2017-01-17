@@ -20,5 +20,6 @@
     "js-yaml": "^3.7.0",
     "jsdoc": "^3.4.3"
   },
-  "repository": "https://github.com/superyyrrzz"
+  "repository": "https://github.com/superyyrrzz",
+  "bugs": "https://github.com/superyyrrzz/Node2DocFX/issues"
 }
