@@ -1,24 +1,19 @@
 {
   "name": "node2docfx",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "generate documentation for node.js by jsdoc and docfx",
-  "main": "gulpfile.js",
+  "main": "node2docfx.js",
   "devDependencies": {
-    "glob": "^7.1.1",
     "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
     "gulp-eslint": "^3.0.1",
     "gulp-jasmine": "^2.4.2",
-    "gulp-run-sequence": "^0.3.2",
-    "gulp-shell": "^0.5.2",
     "jasmine": "^2.5.2",
     "jsdoc-to-markdown": "^2.0.1",
-    "ncp": "^2.0.0"
   },
   "bin": {
     "node2docfx": "./node2docfx.js"
   },
-  "author": "",
+  "author": "superyyrrzz",
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^1.0.0",
