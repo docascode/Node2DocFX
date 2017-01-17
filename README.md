@@ -13,7 +13,7 @@ Create a `node2docfx.json` for your project:
 ```json
 {
   "source": {
-    "include": ['main.js']
+    "include": ["main.js"]
   },
   "package": "package.json",
   "readme": "/README.md",
