@@ -1,6 +1,6 @@
 {
   "name": "node2docfx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "generate documentation for node.js by jsdoc and docfx",
   "main": "node2docfx.js",
   "devDependencies": {
@@ -22,5 +22,9 @@
   },
   "repository": "https://github.com/superyyrrzz",
   "bugs": "https://github.com/superyyrrzz/Node2DocFX/issues",
-  "keywords": ["javascript", "documentation", "docfx"]
+  "keywords": [
+    "javascript",
+    "documentation",
+    "docfx"
+  ]
 }
