@@ -275,7 +275,8 @@
           name: "GLOBAL",
           fullName: "GLOBAL",
           type: "Class",
-          summary: "global object"
+          summary: "global object",
+          langs: ["js"]
         }
       )
     },
