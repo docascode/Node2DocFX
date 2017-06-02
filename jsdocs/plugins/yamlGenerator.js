@@ -40,7 +40,7 @@
   }
 
   function handleFunction(item, doclet) {
-    item.type = doclet.kind === "function" ? "Method" : "Constructor";
+    item.type = doclet.kind === "function" ? "Function" : "Constructor";
     item.syntax = {};
     // set parameters
     if (doclet.params !== undefined) {
@@ -73,7 +73,7 @@
     // 1. function method_name(arg1, arg2, ...);
     // 2. return_type function method_name(arg1, arg2)
     // 3. function method_name(arg1, arg2) -> return_type
-    item.syntax.content = (item.type === "Method" ? "function " : "new ") + item.name;
+    item.syntax.content = (item.type === "Function" ? "function " : "new ") + item.name;
 
     function handleParameterType(type) {
       if (!type) return undefined;
@@ -87,7 +87,7 @@
   }
 
   function handleMember(item, doclet) {
-    item.type = "Field";
+    item.type = "Member";
     // set type
     item.syntax = {};
     if (doclet.type != undefined) {
@@ -117,8 +117,8 @@
           fileMap[i.uid] = i.uid;
           break;
         case "Constructor":
-        case "Method":
-        case "Field":
+        case "Function":
+        case "Member":
           var parentId = i.parent || globalUid;
           var parent = classes[parentId];
           if (parent === undefined) {
