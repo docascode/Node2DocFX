@@ -6,7 +6,6 @@
   var base = '_yamlGeneratorOutput';
   var globalUid = '_global';
   var uidPrefix = '';
-  var builtInTypes = [];
   var yamlMime = "### YamlMime:UniversalReference";
   var outputFileExt = ".yml";
   var jsdocConfigPath = '_jsdocConfTemp.json';
@@ -223,6 +222,11 @@
       if (doclet.memberof === undefined && doclet.kind != "class" && !(doclet.meta && doclet.meta.code && doclet.meta.code.name && doclet.meta.code.name.indexOf("exports") == 0)) {
         return;
       }
+      // ignore inner function or member
+      if (doclet.kind === "member" && doclet.scope === "inner") {
+        return;
+      }
+
       // ignore empty longname
       if (!doclet.longname) {
         return;
@@ -234,8 +238,8 @@
       // basic properties
       var item = {
         uid: uidPrefix + parent + doclet.longname,
-        id: uidPrefix + parent + doclet.longname,
-        parent: (doclet.memberof && doclet.kind !== "class") ? (uidPrefix + doclet.memberof) : undefined,
+        id: doclet.longname,
+        parent: (doclet.memberof && doclet.kind !== "class") ? (doclet.memberof) : undefined,
         name: doclet.name,
         summary: doclet.description ? dfm.convertLinkToGfm(doclet.description) : dfm.convertLinkToGfm(doclet.summary)
       };

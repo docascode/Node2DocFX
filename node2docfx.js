@@ -45,7 +45,13 @@ if (!fs.existsSync(toolPath)) {
     console.err('Can\'t find jsdoc.');
   }
 }
-child_process.execFileSync('node', [toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });
+
+if (process.execArgv.length > 0 && process.execArgv[0].indexOf('--inspect') >= 0) {
+  child_process.execFileSync('node', ['--inspect-brk=5858', toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });
+} else {
+  child_process.execFileSync('node', [toolPath, '-c', jsdocConfigFilename, '-r'], { cwd: node2docfxConfigDir });
+}
+
 
 // rename and clear
 if (config.destination) {
