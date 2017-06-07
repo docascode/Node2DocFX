@@ -239,7 +239,7 @@
       var item = {
         uid: uidPrefix + parent + doclet.longname,
         id: doclet.longname,
-        parent: (doclet.memberof && doclet.kind !== "class") ? (doclet.memberof) : undefined,
+        parent: (doclet.memberof && doclet.kind !== "class") ? (uidPrefix + doclet.memberof) : undefined,
         name: doclet.name,
         summary: doclet.description ? dfm.convertLinkToGfm(doclet.description) : dfm.convertLinkToGfm(doclet.summary)
       };
