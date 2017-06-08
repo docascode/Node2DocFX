@@ -25,7 +25,7 @@
     item.source = {
       id: item.id,
       path: path,
-      startLine: doclet.meta.range[0],
+      startLine: doclet.meta.lineno,
       remote: {
         branch: "master",
         path: path,
