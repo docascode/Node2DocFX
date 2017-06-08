@@ -4,7 +4,7 @@
   var items = [];
   var itemsMap = {};
   var base = '_yamlGeneratorOutput';
-  var globalUid = '_global';
+  var globalUid = 'global';
   var uidPrefix = '';
   var yamlMime = "### YamlMime:UniversalReference";
   var outputFileExt = ".yml";
@@ -15,6 +15,23 @@
     item.langs = ["js"];
     items.push(item);
     itemsMap[item.uid] = item;
+  }
+
+  function setSourceInfo(item, doclet) {
+    var path = doclet.meta.path.replace(env.pwd + "\\", "") + "\\" + doclet.meta.filename;
+    if (path.split("\\").length > 2) {
+      path = path.split("\\").splice(2).join("\\");
+    }
+    item.source = {
+      id: item.id,
+      path: path,
+      startLine: doclet.meta.range[0],
+      remote: {
+        branch: "master",
+        path: path,
+        repo: "https://github.com/Azure/azure-sdk-for-node.git"
+      }
+    };
   }
 
   function handleClass(item, doclet) {
@@ -253,6 +270,12 @@
       }
       // set full name
       item.fullName = (item.parent ? item.parent + "." : uidPrefix) + item.name;
+
+      // set source info
+      if (doclet.kind === "class") {
+        setSourceInfo(item, doclet);
+      }
+
       addItem(item);
       typeMap[doclet.kind](item, doclet);
     },
