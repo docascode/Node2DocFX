@@ -167,7 +167,7 @@
       c.references = [];
       for (var r in c.referenceMap) {
         var f = fileMap[r];
-        if (f !== id) {
+        if (f !== undefined && f !== id) {
           c.references.push({
             uid: r,
             name: r.indexOf(".") == -1 ? r : r.substring(r.indexOf(".") + 1),
