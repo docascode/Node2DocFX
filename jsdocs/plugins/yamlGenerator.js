@@ -25,7 +25,7 @@
     item.source = {
       id: item.id,
       path: path,
-      startLine: doclet.meta.lineno,
+      startLine: doclet.lineno,
       remote: {
         branch: "master",
         path: path,
@@ -244,6 +244,11 @@
       }
       // ignore inner function or member
       if (doclet.kind === "member" && doclet.scope === "inner") {
+        return;
+      }
+
+      // ignore doclet without doucment
+      if (doclet.undocumented === true) {
         return;
       }
 
