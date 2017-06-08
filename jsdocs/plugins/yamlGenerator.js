@@ -123,36 +123,36 @@
     if (!fs.existsSync(base)) {
       fs.mkdirSync(base);
     }
-    items.forEach(function (i) {
-      switch (i.type) {
+    items.forEach(function (item) {
+      switch (item.type) {
         case "Class":
-          classes[i.uid] = {
-            items: [i],
+          classes[item.uid] = {
+            items: [item],
             referenceMap: {}
           };
-          fileMap[i.uid] = i.uid;
+          fileMap[item.uid] = item.uid;
           break;
         case "Constructor":
         case "Function":
         case "Member":
-          var parentId = i.parent || globalUid;
+          var parentId = item.parent || globalUid;
           var parent = classes[parentId];
           if (parent === undefined) {
             console.log(parentId + " is not a class, ignored.");
             break;
           }
-          parent.items.push(i);
+          parent.items.push(item);
           if (parentId === globalUid) {
-            (parent.items[0].children = parent.items[0].children || []).push(i.uid);
+            (parent.items[0].children = parent.items[0].children || []).push(item.uid);
           }
-          fileMap[i.uid] = parentId;
-          (i.syntax.parameters || []).forEach(function (p) {
+          fileMap[item.uid] = parentId;
+          (item.syntax.parameters || []).forEach(function (p) {
             (p.type || []).forEach(function (t) {
               classes[parentId].referenceMap[t] = true;
             });
           });
-          if (i.syntax.return) {
-            (i.syntax.return.type || []).forEach(function (t) {
+          if (item.syntax.return) {
+            (item.syntax.return.type || []).forEach(function (t) {
               classes[parentId].referenceMap[t] = true;
             })
           }
@@ -184,6 +184,11 @@
       // something wrong in js-yaml, workaround it by serialize and deserialize from JSON
       var c = JSON.parse(JSON.stringify(c));
       // replace \r, \n, space with dash
+      // filter global without children
+      if (id == globalUid && (!c.items[0].children || c.items[0].children.length === 0)) {
+        continue;
+      }
+
       var fileName = id.replace(/[ \n\r]/g, "-") + outputFileExt;
       if (fileName && fileName.split(".").length > 2) {
         fileName = fileName.split(".").splice(1).join(".");
