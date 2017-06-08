@@ -168,7 +168,7 @@
       var c = JSON.parse(JSON.stringify(c));
       // replace \r, \n, space with dash
       var fileName = id.replace(/[ \n\r]/g, "-") + outputFileExt;
-      if (fileName && fileName.split(".").length > 0) {
+      if (fileName && fileName.split(".").length > 2) {
         fileName = fileName.split(".").splice(1).join(".");
       }
       fs.writeFileSync(base + '/' + fileName, yamlMime + '\n' + serializer.safeDump(c));
