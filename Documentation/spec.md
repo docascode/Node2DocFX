@@ -1,8 +1,6 @@
-Specification
-=============
+# Specification
 
-1. Design
---------
+## 1. Design
 
 ### 1.1 UID Specification
 Based on the [namepath] in JSDoc, to avoid UID conflict between packages, the format of UID is designed to include [package name](https://docs.npmjs.com/files/package.json#name) as:
@@ -19,8 +17,7 @@ JavaScript has some language features hard to fit DocFX's PageViewModel, like [o
 * plugin package: https://www.nuget.org/packages/Microsoft.DocAsCode.Build.JavaScriptReference/
 * plugin source: https://github.com/dotnet/docfx/tree/dev/plugins/Microsoft.DocAsCode.Build.JavaScriptReference
 
-2. JavaScript Language Features
---------
+## 2. JavaScript Language Features
 ### 2.1 Parameters with properties
 See http://usejsdoc.org/tags-param.html#parameters-with-properties
 
@@ -126,7 +123,7 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
   function sayHello(somebody) {
       console.log('Hello ' + JSON.stringify(somebody));
   }
-```
+  ```
 
 #### 2.3.3 Allows a parameter to be repeated (🛠**TO BE IMPLEMENTED**)
 
@@ -146,8 +143,8 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
   }
   ```
 
-3. Other Features in JSDoc
---------
+## 3. Other Features in JSDoc
+
 ### 3.1 `{@link}`
 See http://usejsdoc.org/tags-inline-link.html  
 JSDoc uses `{@link}` inline tag to link to an internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
