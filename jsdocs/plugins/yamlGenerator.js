@@ -162,13 +162,13 @@
 
     var toc = [];
     for (var id in classes) {
-      var c = classes[id];
+      var classItem = classes[id];
       // build references
-      c.references = [];
-      for (var r in c.referenceMap) {
+      classItem.references = [];
+      for (var r in classItem.referenceMap) {
         var f = fileMap[r];
         if (f !== undefined && f !== id) {
-          c.references.push({
+          classItem.references.push({
             uid: r,
             name: r.indexOf(".") == -1 ? r : r.substring(r.indexOf(".") + 1),
             fullName: r,
@@ -176,16 +176,16 @@
           });
         }
       }
-      c.referenceMap = undefined;
-      if (c.references.length == 0) {
-        c.references = undefined;
+      classItem.referenceMap = undefined;
+      if (classItem.references.length == 0) {
+        classItem.references = undefined;
       }
 
       // something wrong in js-yaml, workaround it by serialize and deserialize from JSON
-      var c = JSON.parse(JSON.stringify(c));
+      var classItem = JSON.parse(JSON.stringify(classItem));
       // replace \r, \n, space with dash
       // filter global without children
-      if (id == globalUid && (!c.items[0].children || c.items[0].children.length === 0)) {
+      if (id == globalUid && (!classItem.items[0].children || classItem.items[0].children.length === 0)) {
         continue;
       }
 
@@ -193,12 +193,26 @@
       if (fileName && fileName.split(".").length > 2) {
         fileName = fileName.split(".").splice(1).join(".");
       }
-      fs.writeFileSync(base + '/' + fileName, yamlMime + '\n' + serializer.safeDump(c));
+      fs.writeFileSync(base + '/' + fileName, yamlMime + '\n' + serializer.safeDump(classItem));
       console.log(fileName + " generated.");
-      toc.push({
+
+      var tocItem = {
         uid: id,
-        name: c.items[0].name
-      });
+        name: classItem.items[0].name
+      };    
+      // add methods but constructor method to toc
+      if (classItem.items.length > 1) {
+        for (var itemIndex in classItem.items) {
+          var item = classItem.items[itemIndex];
+          if (item.type === "Function") {
+            (tocItem.items = tocItem.items || []).push({
+              uid: item.id,
+              name: item.name
+            });
+          }
+        }
+      }
+      toc.push(tocItem);
     };
     toc.sort(function (a, b) {
       // sort classes alphabetically, but GLOBAL at last
