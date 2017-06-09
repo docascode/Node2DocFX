@@ -11,6 +11,9 @@ For global members that hasn't parent class, the format of UID is designed as:
 ```
 {packageName}._global.namepath
 ```
+As jsdoc's `@link` supports namepath, so this tool need to convert namepath to DocFX's uid. It needs:
+1. prepend package name as design above.
+2. encodeURIComponent the namepath. As `#` often appears in namepath, but it also means url anchor in DocFX's cross reference syntax. It should be encoded into `%23`.
 
 ### 1.2 New DocumentProcessor for DocFX
 JavaScript has some language features hard to fit DocFX's PageViewModel, like [optional parameter](221-an-optional-parameter-using-jsdoc-syntax), [multiple types parameter](231-allows-one-type-or-another-type-type-union), so some new properties are needed and some existing properties' type need to be changed.

@@ -36,7 +36,7 @@
 
   function handleClass(item, doclet) {
     item.type = "Class";
-    item.summary = dfm.convertLinkToGfm(doclet.classdesc);
+    item.summary = dfm.convertLinkToGfm(doclet.classdesc, uidPrefix);
     // set syntax
     // item.syntax = {};
     // hmm... anything better? -- seems no need to add class syntax?
@@ -48,7 +48,7 @@
       parent: item.uid,
       name: item.name,
       fullName: item.fullName + '.' + item.name,
-      summary: dfm.convertLinkToGfm(doclet.description)
+      summary: dfm.convertLinkToGfm(doclet.description, uidPrefix)
     };
     handleFunction(ctor, doclet);
     item.children = [ctor.uid];
@@ -64,7 +64,7 @@
         return {
           id: p.name,
           type: handleParameterType(p.type),
-          description: dfm.convertLinkToGfm(p.description),
+          description: dfm.convertLinkToGfm(p.description, uidPrefix),
           optional: p.optional
         };
       });
@@ -80,7 +80,7 @@
     if (doclet.returns != undefined) {
       item.syntax.return = {
         type: handleParameterType(doclet.returns[0].type),
-        description: dfm.convertLinkToGfm(doclet.returns[0].description),
+        description: dfm.convertLinkToGfm(doclet.returns[0].description, uidPrefix),
         optional: doclet.returns[0].optional
       };
     }
@@ -285,7 +285,7 @@
         id: uidPrefix + parent + doclet.longname,
         parent: (doclet.memberof && doclet.kind !== "class") ? (uidPrefix + doclet.memberof) : undefined,
         name: doclet.name,
-        summary: doclet.description ? dfm.convertLinkToGfm(doclet.description) : dfm.convertLinkToGfm(doclet.summary)
+        summary: doclet.description ? dfm.convertLinkToGfm(doclet.description, uidPrefix) : dfm.convertLinkToGfm(doclet.summary, uidPrefix)
       };
       // set parent
       if (item.parent !== undefined) {

@@ -30,10 +30,7 @@
       var result = '';
       if (!text) {
         // if link text is undefined, it must link to namepath(uid)
-        if (uidPrefix) {
-          target = uidPrefix + target;
-        }
-        result = '<xref:' + target + '>';
+        result = '<xref:' + convertNamepathToUid(target) + '>';
         if (tag === '@linkcode') {
           return '<code>' + result + '</code>';
         }
@@ -47,13 +44,19 @@
         if (!/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(target)) {
           // if target isn't a url, it must be a namepath(uid)
           result += 'xref:';
-          if (uidPrefix) {
-            target = uidPrefix + target;
-          }
+          target = convertNamepathToUid(target);
         }
         result += target + ')';
       }
       return result;
+
+      function convertNamepathToUid(namepath) {
+        uid = encodeURIComponent(target);
+        if (uidPrefix) {
+          uid = uidPrefix + uid;
+        }
+        return uid;
+      }
     };
   }
 
