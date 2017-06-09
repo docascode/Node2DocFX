@@ -207,7 +207,7 @@
           if (item.type === "Function") {
             (tocItem.items = tocItem.items || []).push({
               uid: item.id,
-              name: item.name
+              name: item.name.replace(/\(.*\)/, "")
             });
           }
         }
