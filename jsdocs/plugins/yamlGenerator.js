@@ -234,6 +234,12 @@
       return 0;
     });
 
+    var packageName = uidPrefix.slice(0, -1);
+    toc = {
+      uid: packageName,
+      topicHref: packageName + '\\index.md',
+      items: toc
+    };
     fs.writeFileSync(base + "/toc.yml", serializer.safeDump(toc));
     console.log("toc.yml generated.");
   }
