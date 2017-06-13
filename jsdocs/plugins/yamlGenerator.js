@@ -1,7 +1,5 @@
 (function () {
   var dfm = require('./dfm');
-  var fs = require('fs');
-  var path = require('path');
 
   var items = [];
   var itemsMap = {};
@@ -235,21 +233,6 @@
 
       return 0;
     });
-
-    //Generate package node in subpackage toc.yml
-    var packageName = uidPrefix.slice(0, -1);
-    var packageIndex = path.join(base, 'index.md');
-    var topicHref;
-    if (fs.existsSync(packageIndex)) {
-      topicHref = path.join(packageName, 'index.md');
-    } else {
-      topicHref = undefined;
-    }
-    toc = {
-      uid: packageName,
-      topicHref: topicHref,
-      items: toc
-    };
 
     fs.writeFileSync(base + "/toc.yml", serializer.safeDump(toc));
     console.log("toc.yml generated.");
