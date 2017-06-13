@@ -329,7 +329,6 @@
           name: "GLOBAL",
           fullName: "GLOBAL",
           type: "Class",
-          summary: "global object",
           langs: ["js"]
         }
       )
