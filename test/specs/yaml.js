@@ -40,6 +40,17 @@ describe('Yaml', function () {
     });
   });
 
+  describe('method', function () {
+    it('should pass custom tags', function () {
+      var methodItem = output.MyClass.items.getValue('MyClass~sayHello');
+      expect(methodItem.tags).toBeDefined();
+      expect(methodItem.tags[0].originalTitle).toBe('customTag');
+      expect(methodItem.tags[0].title).toBe('customtag');
+      expect(methodItem.tags[0].text).toBe('This is an unknown tag to jsdoc.');
+      expect(methodItem.tags[0].value).toBe('This is an unknown tag to jsdoc.');
+    });
+  });
+
   Object.prototype.getValue = function (uid) {
     return this.find(function (item) {
       return item.uid === uid;

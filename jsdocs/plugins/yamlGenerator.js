@@ -307,7 +307,12 @@
       if (doclet.kind === "class") {
         setSourceInfo(item, doclet);
       }
-      
+
+      // pass custom tags
+      if ('tags' in doclet) {
+        item.tags = doclet.tags;
+      }
+
       typeMap[doclet.kind](item, doclet);
       addItem(item);
     },

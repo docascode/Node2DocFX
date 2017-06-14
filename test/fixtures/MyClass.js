@@ -6,6 +6,7 @@
 function MyClass() {
   /**
    * @param {string} somebody Somebody's name.
+   * @customTag This is an unknown tag to jsdoc.
    */
   function sayHello(somebody) {
     alert('Hello ' + somebody);
