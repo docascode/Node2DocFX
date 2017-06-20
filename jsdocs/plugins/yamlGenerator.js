@@ -35,7 +35,7 @@
       path: path,
       startLine: doclet.meta.lineno,
       remote: {
-        branch: "master",
+        branch: "jsdoc",
         path: path,
         repo: "https://github.com/Azure/azure-sdk-for-node.git"
       }
