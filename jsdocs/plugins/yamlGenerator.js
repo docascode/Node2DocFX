@@ -9,19 +9,24 @@
   var yamlMime = "### YamlMime:UniversalReference";
   var outputFileExt = ".yml";
   var jsdocConfigPath = '_jsdocConfTemp.json';
-  var builtInTypes = ["array","arraybuffer","asyncfunction","atomics","boolean","dataview","date","error","evalerror","float32array","float64array","function","generator","generatorfunction","infinity","int16array","int32array","int8array","internalerror","intl","intl.collator","intl.datetimeformat","intl.numberformat","iterator","json","map","math","nan","number","object","parallelarray","promise","proxy","rangeerror","referenceerror","reflect","regexp","simd","simd.bool16x8","simd.bool32x4","simd.bool64x2","simd.bool8x16","simd.float32x4","simd.float64x2","simd.int16x8","simd.int32x4","simd.int8x16","simd.uint16x8","simd.uint32x4","simd.uint8x16","set","sharedarraybuffer","stopiteration","string","symbol","syntaxerror","typeerror","typedarray","urierror","uint16array","uint32array","uint8array","uint8clampedarray","weakmap","weakset", "undefined"]
+  var builtInTypes = ["array","arraybuffer","asyncfunction","atomics","boolean","dataview","date","error","evalerror","float32array","float64array","function","generator","generatorfunction","infinity","int16array","int32array","int8array","internalerror","intl","intl.collator","intl.datetimeformat","intl.numberformat","iterator","json","map","math","nan","number","object","parallelarray","promise","proxy","rangeerror","referenceerror","reflect","regexp","simd","simd.bool16x8","simd.bool32x4","simd.bool64x2","simd.bool8x16","simd.float32x4","simd.float64x2","simd.int16x8","simd.int32x4","simd.int8x16","simd.uint16x8","simd.uint32x4","simd.uint8x16","set","sharedarraybuffer","stopiteration","string","symbol","syntaxerror","typeerror","typedarray","urierror","uint16array","uint32array","uint8array","uint8clampedarray","weakmap","weakset", "undefined"];
 
   function addItem(item) {
     if (itemsMap[item.uid] && item.summary === "") {
       return;
     }
     item.langs = ["js"];
-    if (item.type === "Class") {
-      // put class in front of item array to ensure serialize won't skip anything useful.
-      items.unshift(item);
+    // javascript dosen't allow method / class with the same name
+    if (itemsMap[item.uid] !== undefined && items[items.length - 1].uid == item.uid) {
+      items[items.length - 1] = item;
     } else {
-      items.push(item);
-    }    
+      if (item.type === "Class") {
+        // put class in front of item array to ensure serialize won't skip anything useful.
+        items.unshift(item);
+      } else {
+        items.push(item);
+      }
+    }
     itemsMap[item.uid] = item;
   }
 
@@ -162,7 +167,7 @@
           if (item.syntax.return) {
             (item.syntax.return.type || []).forEach(function (t) {
               classes[parentId].referenceMap[t] = true;
-            })
+            });
           }
           break;
       }
@@ -190,7 +195,7 @@
       }
 
       // something wrong in js-yaml, workaround it by serialize and deserialize from JSON
-      var classItem = JSON.parse(JSON.stringify(classItem));
+      classItem = JSON.parse(JSON.stringify(classItem));
       // replace \r, \n, space with dash
       // filter global without children
       if (id == globalUid && (!classItem.items[0].children || classItem.items[0].children.length === 0)) {
@@ -221,7 +226,7 @@
         }
       }
       toc.push(tocItem);
-    };
+    }
     toc.sort(function (a, b) {
       // sort classes alphabetically, but GLOBAL at last
       if (a.uid === globalUid) {
@@ -297,7 +302,7 @@
       };
       // set parent
       if (item.parent !== undefined) {
-        var parent = itemsMap[item.parent];
+        parent = itemsMap[item.parent];
         (parent.children = parent.children || []).push(item.uid);
       }
       // set full name
@@ -344,7 +349,7 @@
           type: "Class",
           langs: ["js"]
         }
-      )
+      );
     },
     parseComplete: function () {
       serialize();
