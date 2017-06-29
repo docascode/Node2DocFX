@@ -6,21 +6,21 @@
   var base = '_yamlGeneratorOutput';
   var globalUid = 'global';
   var uidPrefix = '';
-  var yamlMime = "### YamlMime:UniversalReference";
-  var outputFileExt = ".yml";
+  var yamlMime = '### YamlMime:UniversalReference';
+  var outputFileExt = '.yml';
   var jsdocConfigPath = '_jsdocConfTemp.json';
-  var builtInTypes = ["array","arraybuffer","asyncfunction","atomics","boolean","dataview","date","error","evalerror","float32array","float64array","function","generator","generatorfunction","infinity","int16array","int32array","int8array","internalerror","intl","intl.collator","intl.datetimeformat","intl.numberformat","iterator","json","map","math","nan","number","object","parallelarray","promise","proxy","rangeerror","referenceerror","reflect","regexp","simd","simd.bool16x8","simd.bool32x4","simd.bool64x2","simd.bool8x16","simd.float32x4","simd.float64x2","simd.int16x8","simd.int32x4","simd.int8x16","simd.uint16x8","simd.uint32x4","simd.uint8x16","set","sharedarraybuffer","stopiteration","string","symbol","syntaxerror","typeerror","typedarray","urierror","uint16array","uint32array","uint8array","uint8clampedarray","weakmap","weakset", "undefined"];
+  var builtInTypes = ['array','arraybuffer','asyncfunction','atomics','boolean','dataview','date','error','evalerror','float32array','float64array','function','generator','generatorfunction','infinity','int16array','int32array','int8array','internalerror','intl','intl.collator','intl.datetimeformat','intl.numberformat','iterator','json','map','math','nan','number','object','parallelarray','promise','proxy','rangeerror','referenceerror','reflect','regexp','simd','simd.bool16x8','simd.bool32x4','simd.bool64x2','simd.bool8x16','simd.float32x4','simd.float64x2','simd.int16x8','simd.int32x4','simd.int8x16','simd.uint16x8','simd.uint32x4','simd.uint8x16','set','sharedarraybuffer','stopiteration','string','symbol','syntaxerror','typeerror','typedarray','urierror','uint16array','uint32array','uint8array','uint8clampedarray','weakmap','weakset', 'undefined'];
 
   function addItem(item) {
-    if (itemsMap[item.uid] && item.summary === "") {
+    if (itemsMap[item.uid] && item.summary === '') {
       return;
     }
-    item.langs = ["js"];
+    item.langs = ['js'];
     // javascript dosen't allow method / class with the same name
     if (itemsMap[item.uid] !== undefined && items[items.length - 1].uid == item.uid) {
       items[items.length - 1] = item;
     } else {
-      if (item.type === "Class") {
+      if (item.type === 'Class') {
         // put class in front of item array to ensure serialize won't skip anything useful.
         items.unshift(item);
       } else {
@@ -31,24 +31,24 @@
   }
 
   function setSourceInfo(item, doclet) {
-    var path = doclet.meta.path.replace(env.pwd + "\\", "") + "\\" + doclet.meta.filename;
-    if (path.split("\\").length > 2) {
-      path = path.split("\\").splice(2).join("\\");
+    var path = doclet.meta.path.replace(env.pwd + '\\', '') + '\\' + doclet.meta.filename;
+    if (path.split('\\').length > 2) {
+      path = path.split('\\').splice(2).join('\\');
     }
     item.source = {
       id: item.id,
       path: path,
       startLine: doclet.meta.lineno,
       remote: {
-        branch: "jsdoc",
+        branch: 'jsdoc',
         path: path,
-        repo: "https://github.com/Azure/azure-sdk-for-node.git"
+        repo: 'https://github.com/Azure/azure-sdk-for-node.git'
       }
     };
   }
 
   function handleClass(item, doclet) {
-    item.type = "Class";
+    item.type = 'Class';
     item.summary = dfm.convertLinkToGfm(doclet.classdesc, uidPrefix);
     // set syntax
     // item.syntax = {};
@@ -56,8 +56,8 @@
     // item.syntax.content = item.name;
     // add a constructor
     var ctor = {
-      id: item.id + ".#ctor",
-      uid: item.uid + ".#ctor",
+      id: item.id + '.#ctor',
+      uid: item.uid + '.#ctor',
       parent: item.uid,
       name: item.name,
       fullName: item.fullName + '.' + item.name,
@@ -69,7 +69,7 @@
   }
 
   function handleFunction(item, doclet) {
-    item.type = doclet.kind === "function" ? "Function" : "Constructor";
+    item.type = doclet.kind === 'function' ? 'Function' : 'Constructor';
     item.syntax = {};
     // set parameters
     if (doclet.params !== undefined) {
@@ -85,10 +85,10 @@
     // set name and fullName
     var params = [];
     (item.syntax.parameters || []).forEach(function (p) {
-      if (p.id.indexOf(".") < 0) params.push(p.id);
+      if (p.id.indexOf('.') < 0) params.push(p.id);
     });
-    item.name += "(" + params.join(", ") + ")";
-    item.fullName += "(" + params.join(", ") + ")";
+    item.name += '(' + params.join(', ') + ')';
+    item.fullName += '(' + params.join(', ') + ')';
     // set return type
     if (doclet.returns != undefined) {
       item.syntax.return = {
@@ -102,7 +102,7 @@
     // 1. function method_name(arg1, arg2, ...);
     // 2. return_type function method_name(arg1, arg2)
     // 3. function method_name(arg1, arg2) -> return_type
-    item.syntax.content = (item.type === "Function" ? "function " : "new ") + item.name;
+    item.syntax.content = (item.type === 'Function' ? 'function ' : 'new ') + item.name;
 
     function handleParameterType(type) {
       if (!type) return undefined;
@@ -116,7 +116,7 @@
   }
 
   function handleMember(item, doclet) {
-    item.type = "Member";
+    item.type = 'Member';
     // set type
     item.syntax = {};
     if (doclet.type != undefined) {
@@ -129,8 +129,8 @@
   }
 
   function serialize() {
-    var serializer = require("js-yaml");
-    var fs = require("fs");
+    var serializer = require('js-yaml');
+    var fs = require('fs');
     var classes = {};
     var fileMap = {};
     if (!fs.existsSync(base)) {
@@ -138,38 +138,38 @@
     }
     items.forEach(function (item) {
       switch (item.type) {
-        case "Class":
-          classes[item.uid] = {
-            items: [item],
-            referenceMap: {}
-          };
-          fileMap[item.uid] = item.uid;
+      case 'Class':
+        classes[item.uid] = {
+          items: [item],
+          referenceMap: {}
+        };
+        fileMap[item.uid] = item.uid;
+        break;
+      case 'Constructor':
+      case 'Function':
+      case 'Member':
+        var parentId = item.parent || globalUid;
+        var parent = classes[parentId];
+        if (parent === undefined) {
+          console.log(parentId + ' is not a class, ignored.');
           break;
-        case "Constructor":
-        case "Function":
-        case "Member":
-          var parentId = item.parent || globalUid;
-          var parent = classes[parentId];
-          if (parent === undefined) {
-            console.log(parentId + " is not a class, ignored.");
-            break;
-          }
-          parent.items.push(item);
-          if (parentId === globalUid) {
-            (parent.items[0].children = parent.items[0].children || []).push(item.uid);
-          }
-          fileMap[item.uid] = parentId;
-          (item.syntax.parameters || []).forEach(function (p) {
-            (p.type || []).forEach(function (t) {
-              classes[parentId].referenceMap[t] = true;
-            });
+        }
+        parent.items.push(item);
+        if (parentId === globalUid) {
+          (parent.items[0].children = parent.items[0].children || []).push(item.uid);
+        }
+        fileMap[item.uid] = parentId;
+        (item.syntax.parameters || []).forEach(function (p) {
+          (p.type || []).forEach(function (t) {
+            classes[parentId].referenceMap[t] = true;
           });
-          if (item.syntax.return) {
-            (item.syntax.return.type || []).forEach(function (t) {
-              classes[parentId].referenceMap[t] = true;
-            });
-          }
-          break;
+        });
+        if (item.syntax.return) {
+          (item.syntax.return.type || []).forEach(function (t) {
+            classes[parentId].referenceMap[t] = true;
+          });
+        }
+        break;
       }
     });
 
@@ -183,7 +183,7 @@
         if (f !== undefined && f !== id) {
           classItem.references.push({
             uid: r,
-            name: r.indexOf(".") == -1 ? r : r.substring(r.indexOf(".") + 1),
+            name: r.indexOf('.') == -1 ? r : r.substring(r.indexOf('.') + 1),
             fullName: r,
             isExternal: f === undefined
           });
@@ -202,12 +202,12 @@
         continue;
       }
 
-      var fileName = id.replace(/[ \n\r]/g, "-") + outputFileExt;
-      if (fileName && fileName.split(".").length > 2) {
-        fileName = fileName.split(".").splice(1).join(".");
+      var fileName = id.replace(/[ \n\r]/g, '-') + outputFileExt;
+      if (fileName && fileName.split('.').length > 2) {
+        fileName = fileName.split('.').splice(1).join('.');
       }
       fs.writeFileSync(base + '/' + fileName, yamlMime + '\n' + serializer.safeDump(classItem));
-      console.log(fileName + " generated.");
+      console.log(fileName + ' generated.');
 
       var tocItem = {
         uid: id,
@@ -217,10 +217,10 @@
       if (classItem.items.length > 1) {
         for (var itemIndex in classItem.items) {
           var item = classItem.items[itemIndex];
-          if (item.type === "Function") {
+          if (item.type === 'Function') {
             (tocItem.items = tocItem.items || []).push({
               uid: item.id,
-              name: item.name.replace(/\(.*\)/, "")
+              name: item.name.replace(/\(.*\)/, '')
             });
           }
         }
@@ -247,14 +247,14 @@
       return 0;
     });
 
-    fs.writeFileSync(base + "/toc.yml", serializer.safeDump(toc));
-    console.log("toc.yml generated.");
+    fs.writeFileSync(base + '/toc.yml', serializer.safeDump(toc));
+    console.log('toc.yml generated.');
   }
 
   var typeMap = {
-    "member": handleMember,
-    "function": handleFunction,
-    "class": handleClass
+    'member': handleMember,
+    'function': handleFunction,
+    'class': handleClass
   };
 
   exports.handlers = {
@@ -262,20 +262,20 @@
       var doclet = e.doclet;
       // ignore anything whose parent is not a doclet
       // except it's a class made with help function
-      if (doclet.memberof !== undefined && itemsMap[uidPrefix + doclet.memberof] === undefined && doclet.kind !== "class") {
+      if (doclet.memberof !== undefined && itemsMap[uidPrefix + doclet.memberof] === undefined && doclet.kind !== 'class') {
         return;
       }
       // ignore unrecognized kind
       if (typeMap[doclet.kind] === undefined) {
-        console.log("unrecognized kind: " + doclet.kind);
+        console.log('unrecognized kind: ' + doclet.kind);
         return;
       }
       // ignore unexported global member
-      if (doclet.memberof === undefined && doclet.kind != "class" && !(doclet.meta && doclet.meta.code && doclet.meta.code.name && doclet.meta.code.name.indexOf("exports") == 0)) {
+      if (doclet.memberof === undefined && doclet.kind != 'class' && !(doclet.meta && doclet.meta.code && doclet.meta.code.name && doclet.meta.code.name.indexOf('exports') == 0)) {
         return;
       }
       // ignore inner function or member
-      if (doclet.kind === "member" && doclet.scope === "inner") {
+      if (doclet.kind === 'member' && doclet.scope === 'inner') {
         return;
       }
 
@@ -289,14 +289,14 @@
         return;
       }
       var parent = '';
-      if (doclet.memberof === undefined && doclet.kind !== "class") {
-        parent = "_global.";
+      if (doclet.memberof === undefined && doclet.kind !== 'class') {
+        parent = '_global.';
       }
       // basic properties
       var item = {
         uid: uidPrefix + parent + doclet.longname,
         id: uidPrefix + parent + doclet.longname,
-        parent: (doclet.memberof && doclet.kind !== "class") ? (uidPrefix + doclet.memberof) : undefined,
+        parent: (doclet.memberof && doclet.kind !== 'class') ? (uidPrefix + doclet.memberof) : undefined,
         name: doclet.name,
         summary: doclet.description ? dfm.convertLinkToGfm(doclet.description, uidPrefix) : dfm.convertLinkToGfm(doclet.summary, uidPrefix)
       };
@@ -306,10 +306,10 @@
         (parent.children = parent.children || []).push(item.uid);
       }
       // set full name
-      item.fullName = (item.parent ? item.parent + "." : uidPrefix) + item.name;
+      item.fullName = (item.parent ? item.parent + '.' : uidPrefix) + item.name;
 
       // set source info
-      if (doclet.kind === "class") {
+      if (doclet.kind === 'class') {
         setSourceInfo(item, doclet);
       }
 
@@ -322,7 +322,6 @@
       addItem(item);
     },
     parseBegin: function () {
-      var fs = require('fs');
       var fse = require('fs-extra');
       var path = require('path');
       var config = fse.readJsonSync(jsdocConfigPath);
@@ -336,18 +335,18 @@
       if (config.package) {
         var packageJson = fse.readJsonSync(config.package);
         if (packageJson && packageJson.name) {
-          globalUid = packageJson.name + "." + globalUid;
-          uidPrefix = packageJson.name + ".";
+          globalUid = packageJson.name + '.' + globalUid;
+          uidPrefix = packageJson.name + '.';
         }
       }
       items.push(
         {
           uid: globalUid,
           id: globalUid,
-          name: "GLOBAL",
-          fullName: "GLOBAL",
-          type: "Class",
-          langs: ["js"]
+          name: 'GLOBAL',
+          fullName: 'GLOBAL',
+          type: 'Class',
+          langs: ['js']
         }
       );
     },
