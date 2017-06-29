@@ -51,16 +51,16 @@
       return result;
 
       function convertNamepathToUid(namepath) {
-        uid = encodeURIComponent(target);
+        var uid = encodeURIComponent(namepath);
         if (uidPrefix) {
           uid = uidPrefix + uid;
         }
         return uid;
       }
-    };
+    }
   }
 
   module.exports = {
     convertLinkToGfm: convertLinkToGfm
-  }
+  };
 })();

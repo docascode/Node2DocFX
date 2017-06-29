@@ -1,4 +1,5 @@
 (function () {
+  /*global env*/
   var dfm = require('./dfm');
 
   var items = [];

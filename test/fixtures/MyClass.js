@@ -3,6 +3,8 @@
  * @class
  * @classdesc This is a description of the MyClass class.
  */
+/*global alert, globalNS*/
+/*eslint no-unused-vars: "off"*/
 function MyClass() {
   /**
    * @param {string} somebody Somebody's name.
@@ -54,12 +56,12 @@ var Documents = {
     /**
      * An ordinary newspaper.
      */
-    Newspaper: 1,
+  Newspaper: 1,
     /**
      * My diary.
      * @private
      */
-    Diary: 2
+  Diary: 2
 };
 
 /**
@@ -74,7 +76,7 @@ function DairyProduct() {}
  * @return {boolean}
  */
 DairyProduct.prototype.isSolid = function() {
-    throw new Error('must be implemented by subclass!');
+  throw new Error('must be implemented by subclass!');
 };
 
 /**
@@ -89,7 +91,7 @@ function Milk() {}
  * @return {boolean} Always returns false.
  */
 Milk.prototype.isSolid = function() {
-    return false;
+  return false;
 };
 
 /**
@@ -98,9 +100,9 @@ Milk.prototype.isSolid = function() {
   */
 var MyNamespace = {
     /** documented as MyNamespace.foo */
-    foo: function() {},
+  foo: function() {},
     /** documented as MyNamespace.bar */
-    bar: 1
+  bar: 1
 };
 
 /**
@@ -110,8 +112,8 @@ var MyNamespace = {
  */
 var triState = {
     /** The true value */
-    TRUE: 1,
-    FALSE: -1,
+  TRUE: 1,
+  FALSE: -1,
     /** @type {boolean} */
-    MAYBE: true
+  MAYBE: true
 };
