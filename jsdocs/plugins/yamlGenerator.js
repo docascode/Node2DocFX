@@ -323,6 +323,10 @@
       var fse = require('fs-extra');
       var path = require('path');
       config = fse.readJsonSync(jsdocConfigPath);
+      
+      if (config.repo && config.repo.url && !config.repo.url.endsWith('.git')) {
+        config.repo.url = config.repo.url + '.git';
+      }
 
       // copy readme.md to index.md
       if (config.readme) {
