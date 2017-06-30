@@ -1,7 +1,7 @@
 (function () {
   /*global env*/
   var dfm = require('./dfm');
-
+  var config = null;
   var items = [];
   var itemsMap = {};
   var base = '_yamlGeneratorOutput';
@@ -32,30 +32,27 @@
   }
 
   function setSourceInfo(item, doclet) {
-    var path = doclet.meta.path.replace(env.pwd + '\\', '') + '\\' + doclet.meta.filename;
-    if (path.split('\\').length > 2) {
-      path = path.split('\\').splice(2).join('\\');
-    }
-    item.source = {
-      id: item.id,
-      path: path,
-      startLine: doclet.meta.lineno,
-      remote: {
-        branch: 'jsdoc',
-        path: path,
-        repo: 'https://github.com/Azure/azure-sdk-for-node.git'
+    if (config.repo) {
+      var path = doclet.meta.path.replace(env.pwd + '\\', '') + '\\' + doclet.meta.filename;
+      if (path.split('\\').length > 2) {
+        path = path.split('\\').splice(2).join('\\');
       }
-    };
+      item.source = {
+        id: item.id,
+        path: path,
+        startLine: doclet.meta.lineno,
+        remote: {
+          branch: config.repo.branch,
+          path: path,
+          repo: config.repo.url
+        }
+      };
+    }
   }
 
   function handleClass(item, doclet) {
     item.type = 'Class';
     item.summary = dfm.convertLinkToGfm(doclet.classdesc, uidPrefix);
-    // set syntax
-    // item.syntax = {};
-    // hmm... anything better? -- seems no need to add class syntax?
-    // item.syntax.content = item.name;
-    // add a constructor
     var ctor = {
       id: item.id + '.#ctor',
       uid: item.uid + '.#ctor',
@@ -325,7 +322,7 @@
     parseBegin: function () {
       var fse = require('fs-extra');
       var path = require('path');
-      var config = fse.readJsonSync(jsdocConfigPath);
+      config = fse.readJsonSync(jsdocConfigPath);
 
       // copy readme.md to index.md
       if (config.readme) {

@@ -33,8 +33,12 @@
     destination: config.destination,
     plugins: [path.join(node2docfxToolDir, jsdocPluginPath)],
     package: config.package,
-    readme: config.readme
+    readme: config.readme,
   };
+  if (config.repo && config.repo.length > 0) {
+    jsdocConfig.repo = config.repo[0];
+  }
+
   var jsdocConfigPath = path.join(node2docfxConfigDir, jsdocConfigFilename);
   fs.writeFileSync(jsdocConfigPath, JSON.stringify(jsdocConfig));
 
