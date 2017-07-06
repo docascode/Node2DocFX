@@ -7,7 +7,7 @@
       "node_modules/"
     ],
     "includePattern": ".+\\.js(doc|x)?$",
-    "excludePattern": "(^|\\/|\\\\)_"
+    "excludePattern": ""
   },
   "destination": "testOutput/"
 }
