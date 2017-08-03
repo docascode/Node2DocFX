@@ -342,16 +342,10 @@
     },
     parseBegin: function () {
       var fse = require('fs-extra');
-      var path = require('path');
       config = fse.readJsonSync(jsdocConfigPath);
       
       if (config.repo && config.repo.url && !config.repo.url.endsWith('.git')) {
         config.repo.url = config.repo.url + '.git';
-      }
-
-      // copy readme.md to index.md
-      if (config.readme) {
-        fse.copySync(config.readme, path.join(base, 'index.md'));
       }
 
       // parse package.json to use package name
