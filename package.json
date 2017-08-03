@@ -1,6 +1,6 @@
 {
   "name": "node2docfx",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "generate documentation for node.js by jsdoc and docfx",
   "main": "node2docfx.js",
   "devDependencies": {
