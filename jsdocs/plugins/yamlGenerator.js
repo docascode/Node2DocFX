@@ -6,6 +6,7 @@
   var itemsMap = {};
   var base = '_yamlGeneratorOutput';
   var globalUid = 'global';
+  var packageName = '';
   var uidPrefix = '';
   var yamlMime = '### YamlMime:UniversalReference';
   var outputFileExt = '.yml';
@@ -132,6 +133,8 @@
     if (!fs.existsSync(base)) {
       fs.mkdirSync(base);
     }
+    
+    fs.appendFileSync(indexName, '# Package ' + packageName + '\r\n');
     fs.appendFileSync(indexName, '## Classes\r\n');
     fs.appendFileSync(indexName, '| Class Name | Description |\r\n');
     fs.appendFileSync(indexName, '|---|---|\r\n');
@@ -353,6 +356,7 @@
       if (config.package) {
         var packageJson = fse.readJsonSync(config.package);
         if (packageJson && packageJson.name) {
+          packageName = packageJson.name;
           globalUid = packageJson.name + '.' + globalUid;
           uidPrefix = packageJson.name + '.';
         }
