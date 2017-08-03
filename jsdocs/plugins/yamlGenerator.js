@@ -139,7 +139,7 @@
       switch (item.type) {
       case 'Class':
         if (item.uid !== globalUid) {
-          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + item.summary + '|\r\n');
+          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + item.summary.replace(/\r/g, ' ') + '|\r\n');
         }        
         break;
       }
