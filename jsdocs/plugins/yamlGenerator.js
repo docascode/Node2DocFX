@@ -139,7 +139,8 @@
       switch (item.type) {
       case 'Class':
         if (item.uid !== globalUid) {
-          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + item.summary.replace(/\r/g, ' ') + '|\r\n');
+          var summary = item.summary.replace(/\r\n/g, ' ').replace(/\r/g, ' ').replace(/\n/g, ' ');
+          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + summary + '|\r\n');
         }        
         break;
       }
