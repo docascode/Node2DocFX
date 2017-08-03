@@ -126,7 +126,28 @@
     item.syntax.content = item.name;
   }
 
-  function serialize() {
+  function serializeIndex() {
+    var fs = require('fs');
+    var indexName = base + '/index.md';
+    if (!fs.existsSync(base)) {
+      fs.mkdirSync(base);
+    }
+    fs.appendFileSync(indexName, '## Classes\r\n');
+    fs.appendFileSync(indexName, '| Class Name | Description |\r\n');
+    fs.appendFileSync(indexName, '|---|---|\r\n');
+    items.forEach(function (item) {
+      switch (item.type) {
+      case 'Class':
+        if (item.uid !== globalUid) {
+          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + item.summary + '|\r\n');
+        }        
+        break;
+      }
+    });
+    
+  }
+
+  function serializeToc() {
     var serializer = require('js-yaml');
     var fs = require('fs');
     var classes = {};
@@ -353,7 +374,8 @@
       );
     },
     parseComplete: function () {
-      serialize();
+      serializeToc();
+      serializeIndex();
       // no need to generate html, directly exit process
       process.exit(0);
     }
