@@ -6,7 +6,6 @@
   var itemsMap = {};
   var base = '_yamlGeneratorOutput';
   var globalUid = 'global';
-  var packageName = '';
   var uidPrefix = '';
   var yamlMime = '### YamlMime:UniversalReference';
   var outputFileExt = '.yml';
@@ -125,30 +124,6 @@
     }
     // set syntax
     item.syntax.content = item.name;
-  }
-
-  function serializeIndex() {
-    var fs = require('fs');
-    var indexName = base + '/index.md';
-    if (!fs.existsSync(base)) {
-      fs.mkdirSync(base);
-    }
-    
-    fs.appendFileSync(indexName, '# Package ' + packageName + '\r\n');
-    fs.appendFileSync(indexName, '## Classes\r\n');
-    fs.appendFileSync(indexName, '| Class Name | Description |\r\n');
-    fs.appendFileSync(indexName, '|---|---|\r\n');
-    items.forEach(function (item) {
-      switch (item.type) {
-      case 'Class':
-        if (item.uid !== globalUid) {
-          var summary = item.summary.replace(/\r\n/g, ' ').replace(/\r/g, ' ').replace(/\n/g, ' ');
-          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + summary + '|\r\n');
-        }        
-        break;
-      }
-    });
-    
   }
 
   function serializeToc() {
@@ -356,7 +331,6 @@
       if (config.package) {
         var packageJson = fse.readJsonSync(config.package);
         if (packageJson && packageJson.name) {
-          packageName = packageJson.name;
           globalUid = packageJson.name + '.' + globalUid;
           uidPrefix = packageJson.name + '.';
         }
@@ -374,7 +348,6 @@
     },
     parseComplete: function () {
       serializeToc();
-      serializeIndex();
       // no need to generate html, directly exit process
       process.exit(0);
     }
