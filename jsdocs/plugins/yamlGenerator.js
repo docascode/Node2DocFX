@@ -212,6 +212,8 @@
         name: classItem.items[0].name
       };    
       // add methods but constructor method to toc
+      // remove methods from toc
+      /*
       if (classItem.items.length > 1) {
         for (var itemIndex in classItem.items) {
           var item = classItem.items[itemIndex];
@@ -223,6 +225,7 @@
           }
         }
       }
+      */
       toc.push(tocItem);
     }
     toc.sort(function (a, b) {

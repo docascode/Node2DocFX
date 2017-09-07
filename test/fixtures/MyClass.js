@@ -1,10 +1,10 @@
+/*global alert, globalNS*/
+/*eslint no-unused-vars: "off"*/
 /**
  * This is a description of the MyClass constructor function.
  * @class
  * @classdesc This is a description of the MyClass class.
  */
-/*global alert, globalNS*/
-/*eslint no-unused-vars: "off"*/
 function MyClass() {
   /**
    * @param {string} somebody Somebody's name.

@@ -51,6 +51,17 @@ describe('Yaml', function () {
     });
   });
 
+  describe('toc', function () {
+    it('should have children', function () {
+      var toc = output.toc;
+      expect(toc.length).toBe(3);
+    });
+    it(' class should have no children', function () {
+      var toc = output.toc;
+      expect(toc[2].items).toBeUndefined();
+    });    
+  });
+
   Object.prototype.getValue = function (uid) {
     return this.find(function (item) {
       return item.uid === uid;
