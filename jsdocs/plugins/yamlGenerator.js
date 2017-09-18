@@ -280,6 +280,14 @@
         return;
       }
 
+      if (doclet.access === 'private') {
+        return;
+      }
+
+      if (doclet.name && doclet.name[0] === '_') {
+        return;
+      }
+
       // ignore doclet without doucment
       if (doclet.undocumented === true) {
         return;
