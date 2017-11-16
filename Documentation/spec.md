@@ -3,7 +3,7 @@
 ## 1. Design
 
 ### 1.1 UID Specification
-Based on the [namepath] in JSDoc, to avoid UID conflict between packages, the format of UID is designed to include [package name](https://docs.npmjs.com/files/package.json#name) as:
+Based on the [namepath](http://usejsdoc.org/about-namepaths.html) in JSDoc, to avoid UID conflict between packages, the format of UID is designed to include [package name](https://docs.npmjs.com/files/package.json#name) as:
 ```
 {packageName}.namepath
 ```
@@ -11,14 +11,14 @@ For global members that hasn't parent class, the format of UID is designed as:
 ```
 {packageName}._global.namepath
 ```
-As jsdoc's `@link` supports namepath, so this tool need to convert namepath to DocFX's uid. It needs:
+As jsdoc's [`@link`](http://usejsdoc.org/tags-inline-link.html) supports namepath, so this tool need to convert namepath to DocFX's uid. It needs:
 1. prepend package name as design above.
-2. encodeURIComponent the namepath. As `#` often appears in namepath, but it also means url anchor in DocFX's cross reference syntax. It should be encoded into `%23`.
+2. encodeURIComponent the namepath. As `#` is the separator for instance method in jsdoc, but it also means url anchor in DocFX's cross reference syntax. It should be encoded into `%23`.
 
 ### 1.2 New DocumentProcessor for DocFX
-JavaScript has some language features hard to fit DocFX's PageViewModel, like [optional parameter](221-an-optional-parameter-using-jsdoc-syntax), [multiple types parameter](231-allows-one-type-or-another-type-type-union), so some new properties are needed and some existing properties' type need to be changed.
-* plugin package: https://www.nuget.org/packages/Microsoft.DocAsCode.Build.JavaScriptReference/
-* plugin source: https://github.com/dotnet/docfx/tree/dev/plugins/Microsoft.DocAsCode.Build.JavaScriptReference
+JavaScript has some language features hard to fit into DocFX's PageViewModel, like [optional parameter](221-an-optional-parameter-using-jsdoc-syntax), [multiple types parameter](231-allows-one-type-or-another-type-type-union), so some new properties are needed and some existing properties' type need to be changed.
+* plugin package: https://www.nuget.org/packages/Microsoft.DocAsCode.Build.UniversalReference/
+* plugin source: https://github.com/dotnet/docfx/tree/dev/plugins/Microsoft.DocAsCode.Build.UniversalReference
 
 ## 2. JavaScript Language Features
 ### 2.1 Parameters with properties
@@ -150,9 +150,9 @@ See http://usejsdoc.org/tags-param.html#multiple-types-and-repeatable-parameters
 
 ### 3.1 `{@link}`
 See http://usejsdoc.org/tags-inline-link.html  
-JSDoc uses `{@link}` inline tag to link to an internal item or an external URL, which is link a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.  
+JSDoc uses `{@link}` inline tag to link to an internal item or an external URL, which is like a combination of [cross reference](http://dotnet.github.io/docfx/spec/docfx_flavored_markdown.html#cross-reference) in DFM and [link](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) in GFM.
 To make it compatible with DocFX, `{@link}` syntax will be transformed to DFM syntax when generating YAML files.
 
 ### 3.2 `{@tutorial}` (:no_good_man:**NOT SUPPORTED FOR NOW**)
 See http://usejsdoc.org/about-tutorials.html  
-JSDoc uses `{@tutorial}` inline/block tag to link to an internal markdown or HTML file, with the filename without extension as identifier. This is not supported as it has the assumption that file under different directionaries can't have the same filename. Using [Markdown Links](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) is recommended.
+JSDoc uses `{@tutorial}` inline/block tag to link to an internal markdown or HTML file, with the filename without extension as identifier. This is not supported as it has the assumption that file under different directionaries can't have the same filename. Using [Markdown Links](https://help.github.com/articles/basic-writing-and-formatting-syntax/#links) is recommended. Another options is to use [cross reference]()
