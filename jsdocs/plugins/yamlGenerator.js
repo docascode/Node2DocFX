@@ -52,7 +52,10 @@
 
   function handleClass(item, doclet) {
     item.type = 'Class';
-    item.summary = dfm.convertLinkToGfm(doclet.classdesc, uidPrefix);
+    if (doclet.classdesc) {
+      item.summary = dfm.convertLinkToGfm(doclet.classdesc, uidPrefix);
+    }
+    
     var ctor = {
       id: item.id + '.#ctor',
       uid: item.uid + '.#ctor',
