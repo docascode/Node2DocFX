@@ -13,7 +13,7 @@
   var builtInTypes = ['array','arraybuffer','asyncfunction','atomics','boolean','dataview','date','error','evalerror','float32array','float64array','function','generator','generatorfunction','infinity','int16array','int32array','int8array','internalerror','intl','intl.collator','intl.datetimeformat','intl.numberformat','iterator','json','map','math','nan','number','object','parallelarray','promise','proxy','rangeerror','referenceerror','reflect','regexp','simd','simd.bool16x8','simd.bool32x4','simd.bool64x2','simd.bool8x16','simd.float32x4','simd.float64x2','simd.int16x8','simd.int32x4','simd.int8x16','simd.uint16x8','simd.uint32x4','simd.uint8x16','set','sharedarraybuffer','stopiteration','string','symbol','syntaxerror','typeerror','typedarray','urierror','uint16array','uint32array','uint8array','uint8clampedarray','weakmap','weakset', 'undefined'];
 
   function addItem(item) {
-    if (itemsMap[item.uid] && item.summary === '') {
+    if (itemsMap[item.uid] && (itemsMap[item.uid].summary && itemsMap[item.uid].summary !== '' || item.summary === '')) {
       return;
     }
     item.langs = ['js'];
