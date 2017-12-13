@@ -6,4 +6,3 @@ node_modules
 obj
 temp
 testOutput
-package-lock.json
