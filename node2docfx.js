@@ -36,6 +36,7 @@
     plugins: [path.join(node2docfxToolDir, jsdocPluginPath)],
     package: config.package,
     readme: config.readme,
+    recurseDepth: config.recurseDepth ? config.recurseDepth : 10
   };
   if (config.repo && config.repo.length > 0) {
     jsdocConfig.repo = config.repo[0];
