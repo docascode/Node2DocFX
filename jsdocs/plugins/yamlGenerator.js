@@ -275,7 +275,7 @@
         return;
       }
       // ignore unexported global member
-      if (doclet.memberof === undefined && doclet.kind != 'class' && !(doclet.meta && doclet.meta.code && doclet.meta.code.name && doclet.meta.code.name.indexOf('exports') == 0)) {
+      if (doclet.memberof === undefined && doclet.kind != 'class' && !(doclet.meta && doclet.meta.code && typeof(doclet.meta.code.name) === 'string' && doclet.meta.code.name.indexOf('exports') == 0)) {
         return;
       }
       // ignore inner function or member
