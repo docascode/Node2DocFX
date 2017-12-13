@@ -19,7 +19,7 @@
     "fs": "0.0.1-security",
     "fs-extra": "^1.0.0",
     "js-yaml": "^3.7.0",
-    "jsdoc": "^3.4.3"
+    "jsdoc": "^3.5.5"
   },
   "repository": "https://github.com/superyyrrzz",
   "bugs": "https://github.com/superyyrrzz/Node2DocFX/issues",
