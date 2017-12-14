@@ -7,8 +7,7 @@
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-jasmine": "^2.4.2",
-    "jasmine": "^2.5.2",
-    "jsdoc-to-markdown": "^2.0.1"
+    "jasmine": "^2.5.2"
   },
   "bin": {
     "node2docfx": "./node2docfx.js"
