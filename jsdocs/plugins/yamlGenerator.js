@@ -90,6 +90,10 @@
       references: []
     };
 
+    if (classes.length <= 1) {
+      return;
+    }
+
     for (var id in classes) {
       var classItem = classes[id];
       if (id === globalUid) {
