@@ -90,7 +90,8 @@
       references: []
     };
 
-    if (classes.length <= 1) {
+    if (Object.keys(classes).length <= 1) {
+      console.log('Nothing extracted for ' + packageName);
       return;
     }
 
