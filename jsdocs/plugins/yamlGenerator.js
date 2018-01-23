@@ -98,7 +98,8 @@
       var classItem = classes[id];
       if (id === globalUid) {
         for (var i = 1; i < classItem.items.length; i++) {
-          index.items[0].children.push(classItem.items[i]);
+          index.items[0].children.push(classItem.items[i].uid);
+          index.items.push(classItem.items[i]);
         }
       } else {
         if (classItem.items && classItem.items.length) {
