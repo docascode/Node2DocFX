@@ -10,6 +10,7 @@
   var yamlMime = '### YamlMime:UniversalReference';
   var outputFileExt = '.yml';
   var jsdocConfigPath = '_jsdocConfTemp.json';
+  var packageName = '';
 
   function setSourceInfo(item, doclet) {
     if (config.repo) {
@@ -30,37 +31,7 @@
     }
   }
 
-
-
-  function serializeIndex() {
-    var fs = require('fs');
-    var indexName = base + '/index.md';
-    if (!fs.existsSync(base)) {
-      fs.mkdirSync(base);
-    }
-    fs.appendFileSync(indexName, '## Classes\r\n');
-    fs.appendFileSync(indexName, '| Class Name | Description |\r\n');
-    fs.appendFileSync(indexName, '|---|---|\r\n');
-    manager.items.forEach(function (item) {
-      switch (item.type) {
-      case 'Class':
-        if (item.uid !== globalUid) {
-          fs.appendFileSync(indexName, '| @' + item.uid + ' |' + item.summary + '|\r\n');
-        }        
-        break;
-      }
-    });
-    
-  }
-
-  function serializeToc() {
-    var serializer = require('js-yaml');
-    var fs = require('fs');
-    var classes = {};
-    var fileMap = {};
-    if (!fs.existsSync(base)) {
-      fs.mkdirSync(base);
-    }
+  function getClasses(classes, fileMap) {
     manager.items.forEach(function (item) {
       switch (item.type) {
       case 'Class':
@@ -97,6 +68,57 @@
         break;
       }
     });
+    return classes;
+  }
+
+  function serializeIndex(classes) {
+    var serializer = require('js-yaml');
+    var fs = require('fs');
+    if (!fs.existsSync(base)) {
+      fs.mkdirSync(base);
+    }
+
+    var index = {
+      items: [{
+        uid: packageName,
+        name: packageName,
+        langs: ['js'],
+        type: 'package',
+        summary: '',
+        children: []
+      }],
+      references: []
+    };
+
+    for (var id in classes) {
+      var classItem = classes[id];
+      if (id === globalUid) {
+        for (var i = 1; i < classItem.items.length; i++) {
+          index.items[0].children.push(classItem.items[i]);
+        }
+      } else {
+        if (classItem.items && classItem.items.length) {
+          index.items[0].children.push(classItem.items[0].uid);
+          index.references.push({
+            uid : classItem.items[0].uid,
+            name : classItem.items[0].name
+          });
+        }
+      }
+    }
+
+    index = JSON.parse(JSON.stringify(index));
+    fs.writeFileSync(base + '/index.yml', yamlMime + '\n' + serializer.safeDump(index));
+    console.log('index generated.');
+  }
+
+  function serializeToc(classes, fileMap) {
+    var serializer = require('js-yaml');
+    var fs = require('fs');
+    
+    if (!fs.existsSync(base)) {
+      fs.mkdirSync(base);
+    }
 
     var toc = [];
     for (var id in classes) {
@@ -122,8 +144,8 @@
       // something wrong in js-yaml, workaround it by serialize and deserialize from JSON
       classItem = JSON.parse(JSON.stringify(classItem));
       // replace \r, \n, space with dash
-      // filter global without children
-      if (id == globalUid && (!classItem.items[0].children || classItem.items[0].children.length === 0)) {
+      // filter global
+      if (id == globalUid) {
         continue;
       }
 
@@ -142,13 +164,6 @@
       toc.push(tocItem);
     }
     toc.sort(function (a, b) {
-      // sort classes alphabetically, but GLOBAL at last
-      if (a.uid === globalUid) {
-        return 1;
-      }
-      if (b.uid === globalUid) {
-        return -1;
-      }
       var nameA = a.name.toUpperCase();
       var nameB = b.name.toUpperCase();
       if (nameA < nameB) {
@@ -210,21 +225,17 @@
       if (!doclet.longname) {
         return;
       }
-      var parent = '';
-      if (doclet.memberof === undefined && doclet.kind !== 'class') {
-        parent = '_global.';
-      }
       // basic properties
       var item = {
-        uid: uidPrefix + parent + doclet.longname,
-        id: uidPrefix + parent + doclet.longname,
+        uid: uidPrefix + doclet.longname,
+        id: uidPrefix + doclet.longname,
         parent: (doclet.memberof && doclet.kind !== 'class') ? (uidPrefix + doclet.memberof) : undefined,
         name: doclet.name,
         summary: doclet.description ? dfm.convertLinkToGfm(doclet.description, uidPrefix) : dfm.convertLinkToGfm(doclet.summary, uidPrefix)
       };
       // set parent
       if (item.parent !== undefined) {
-        parent = manager.itemsMap[item.parent];
+        var parent = manager.itemsMap[item.parent];
         (parent.children = parent.children || []).push(item.uid);
       }
       // set full name
@@ -255,6 +266,7 @@
       if (config.package) {
         var packageJson = fse.readJsonSync(config.package);
         if (packageJson && packageJson.name) {
+          packageName = packageJson.name;
           globalUid = packageJson.name + '.' + globalUid;
           uidPrefix = packageJson.name + '.';
         }
@@ -271,9 +283,11 @@
       );
     },
     parseComplete: function () {
-      serializeToc();
-      serializeIndex();
-      // no need to generate html, directly exit process
+      var classes = {};
+      var fileMap = {};
+      getClasses(classes, fileMap);
+      serializeIndex(classes);
+      serializeToc(classes, fileMap);
       process.exit(0);
     }
   };

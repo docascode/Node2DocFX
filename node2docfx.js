@@ -19,7 +19,7 @@
   var node2docfxToolDir = path.dirname(process.argv[1]);
   var node2docfxConfigDir = path.dirname(process.argv[2]);
 
-    // read node2docfx's config
+  // read node2docfx's config
   var configPath = process.argv[2];
   var config = {};
   if (fs.existsSync(configPath)) {
@@ -29,7 +29,7 @@
     process.exit(1);
   }
 
-    // generate jsdoc's config
+  // generate jsdoc's config
   var jsdocConfig = {
     source: config.source,
     destination: config.destination,
@@ -45,7 +45,7 @@
   var jsdocConfigPath = path.join(node2docfxConfigDir, jsdocConfigFilename);
   fs.writeFileSync(jsdocConfigPath, JSON.stringify(jsdocConfig));
 
-    // run jsdoc
+  // run jsdoc
   var toolPath = path.join(node2docfxToolDir, jsdocToolPath);
   if (!fs.existsSync(toolPath)) {
     toolPath = path.join(node2docfxToolDir, jsdocToolPathFallback);
@@ -61,11 +61,12 @@
   }
 
 
-    // rename and clear
+  // rename and clear
   if (config.destination) {
     var source = path.join(node2docfxConfigDir, jsdocOutputPath);
     var dest = path.join(node2docfxConfigDir, config.destination);
     fse.ensureDirSync(path.dirname(dest));
+    fse.removeSync(dest);
     fs.renameSync(source, dest);
   }
   fs.unlinkSync(jsdocConfigPath);
