@@ -50,7 +50,7 @@
   if (!fs.existsSync(toolPath)) {
     toolPath = path.join(node2docfxToolDir, jsdocToolPathFallback);
     if (!fs.existsSync(toolPath)) {
-      console.err('Can\'t find jsdoc.');
+      console.error('Can\'t find jsdoc.');
     }
   }
 
